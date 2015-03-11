@@ -1,13 +1,12 @@
 var express = require('express');
+var express = require('express-session');
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
+//init app as express server object
 var app = express();
 
 // view engine setup
@@ -22,8 +21,16 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', routes);
-app.use('/users', users);
+
+//*****************************************************************************************
+//setting the routers/controllers
+//You could add routes this way too: var users = require('./routes/users'); app.use('/users', users);
+app.use('/', require("./routes/index"));
+app.use('/index', require("./routes/index"));
+app.use('/users', require("./routes/users"));
+app.use("/login", require("./routes/login"));
+//*****************************************************************************************
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -33,7 +40,6 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
-
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
@@ -54,7 +60,7 @@ app.use(function(err, req, res, next) {
         message: err.message,
         error: {}
     });
-});
+}); 
 
 
 module.exports = app;

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title> Login Page </title>
+		<% include _header.ejs %>
+	</head>
+
+<body>
+<div>
+	<% if (items) {%>
+	<div> If there were any items, they;d go here: <%= items %> </div>
+	<%} else {%>
+	<div> No items were provided </div>
+	<% } %>
+
+	<form>
+		<div> Username: </div> <input type="text" name="username" /><br />
+		<div> Password: </div> <input type="password" name="password" /> <br />
+	</form>
+
+</div>
+</body>
+
+</html>
