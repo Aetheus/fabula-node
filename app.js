@@ -5,6 +5,11 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var cronjobs = require("./utility/cronjobs.js");
+
+//importing myglobals
+var myglobal = require("./utility/myglobal.js");
+console.log(myglobal.testMsg + " in app.js")
 
 //init app as express server object
 var app = express();
