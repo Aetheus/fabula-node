@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<title> Login Page </title>
-		<% include _header.ejs %>
-	</head>
+<head>
+	<title> Login Page </title>
+	<% include layout\scripts.ejs %>
+</head>
 
 <body>
-<div>
+<% include layout\header.ejs %>
+
+<section>
 	<% if (items) {%>
 	<div> If there were any items, they;d go here: <%= items %> </div>
 	<%} else {%>
@@ -17,8 +19,8 @@
 		<div> Username: </div> <input type="text" name="username" /><br />
 		<div> Password: </div> <input type="password" name="password" /> <br />
 	</form>
+</section>
 
-</div>
+<% include layout\footer.ejs %>
 </body>
-
 </html>
