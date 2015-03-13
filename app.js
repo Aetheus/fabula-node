@@ -10,7 +10,6 @@ var cronjobs = require("./utility/cronjobs.js");
 //importing myglobals
 var myglobal = require("./utility/myglobal.js");
 console.log(myglobal.testMsg + " in app.js")
-myglobal.testMsg = "whoop";
 
 //init app as express server object
 var app = express();
