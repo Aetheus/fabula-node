@@ -12,8 +12,6 @@ var exportObj = {
 	testFunc: function(a){
 		console.log("From globals:" + a);
 	},
-
-
 }
 
 module.exports = exportObj;

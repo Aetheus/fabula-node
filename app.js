@@ -1,5 +1,6 @@
 var express = require('express');
-//var express = require('express-session');
+var session = require('express-session');
+var bodyParser = require("body-parser");
 var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
@@ -22,9 +23,13 @@ app.set('view engine', 'ejs');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+
+//initialize session using secret for express-session's cookie handling
+app.use(session({secret: "this sentence is supposed to be the secret for cookie handling in the web app the longer it is the better haha im stretching this out pretty long huh"}));
 
 
 //*****************************************************************************************

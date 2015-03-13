@@ -9,15 +9,14 @@
 <% include layout/header.ejs %>
 
 <section>
-	<% if (items) {%>
-	<div> If there were any items, they;d go here: <%= items %> </div>
-	<%} else {%>
-	<div> No items were provided </div>
-	<% } %>
+	<div> <% if (message) { %> <%= message %> <% } %></div>
 
-	<form>
+
+	<form action="./login" method="POST">
 		<div> Username: </div> <input type="text" name="username" /><br />
 		<div> Password: </div> <input type="password" name="password" /> <br />
+
+		<input type="submit" value="Click me!">
 	</form>
 </section>
 
