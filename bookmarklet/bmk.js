@@ -22,10 +22,10 @@ javascript:(
 		var FabulaSysAncestor = $();
 		var currentFabulaSysFocus = "title";
 
-		var FabulaSysTitleSelector = "";
-		var FabulaSysLinkSelector = "";
-		var FabulaSysDescriptionSelector = "";
-		var FabulaSysAncestorSelector = "";
+		var FabulaSysTitleSelector = null;
+		var FabulaSysLinkSelector = null;
+		var FabulaSysDescriptionSelector = null;
+		var FabulaSysAncestorSelector = null;
 
 		
 		/*create a floating "menu"*/
