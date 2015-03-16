@@ -7,7 +7,7 @@ var request = require("request");
 
 
 var exportObj = {
-	testMsg: "Succesfully exported scrape.js",
+	testMsg: "Successfully exported scrape.js",
 
 	createNews: function(title,link,description){
 		//object constructor

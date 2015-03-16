@@ -107,6 +107,7 @@ javascript:(
 		/*jqObj will be the jquery object we're passing. 
 		  desc of object will be either "title", "link" or "description" */
 		function setFabulaSysMenu(jqObj, descOfObj){ 
+
 			if(descOfObj === "title"){
 				FabulaSysTitle = jqObj;
 				FabulaSysTitleSelector = getSelectorText(jqObj);
@@ -144,20 +145,10 @@ javascript:(
 
 				e.preventDefault();
 
-				var isClickedBefore = selectedEle.is(e.target);
         		var tempSelectedEle = $(e.target);
 
-        		if(isClickedBefore){
-        			selectedEle = selectedEle.not(e.target);
-        		}else{
-					selectedEle = selectedEle.add(e.target);
-        		}
         		tempSelectedEle.toggleClass("highlighted");
-	
-        		/*counter of selected elements
-        		var numOfEle = selectedEle.length;
-        		var FabulaSysMenuText = "<p>" + numOfEle + "</p>";
-        		$("#FabulaSysMenu").html(FabulaSysMenuText);*/
+
         		setFabulaSysMenu(tempSelectedEle,currentFabulaSysFocus);
 
         		/*prevent link propogation*/
@@ -202,7 +193,7 @@ javascript:(
 		        link: FabulaSysLinkSelector,
 		        description: FabulaSysDescriptionSelector,
 		        ancestor: FabulaSysAncestor,
-		        site: document.URL
+		        site: encodeURIComponent(document.URL)
 		    },
 		    function(data, status){
 		        alert("Data: " + data + "\nStatus: " + status);

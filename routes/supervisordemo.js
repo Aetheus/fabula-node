@@ -10,11 +10,21 @@ router.all("/", function (req,res,next){
 });
 
 router.get("/", function (req,res,next){
-	res.write("hello!");
+			var sess = req.session;
 
-	var fruits = ["apples", "bananas", "starfruit"];
-	res.write(fruits);
-	res.end();
+	res.write("hello from post!\n");
+
+	var titleSelector = (req.query.title != undefined) ? req.query.title : null;
+	var linkSelector = (req.query.link != undefined) ? req.query.link : null;
+	var descriptionSelector = (req.query.description != undefined) ? req.query.description : null;
+	var ancestorSelector = (req.query.ancestor != undefined) ? req.query.ancestor : null;
+	var siteURL = decodeURIComponent(req.query.site);
+
+	//siteURL, ancestor, title, link, description, callback
+	scrape.scrapeMessages(siteURL, ancestorSelector,titleSelector,linkSelector,descriptionSelector, function(err, newsArray){
+		res.write(newsArray.toString());
+		res.end();
+	});
 });
 
 router.post("/", function (req,res,next){
@@ -30,7 +40,7 @@ router.post("/", function (req,res,next){
 
 	//siteURL, ancestor, title, link, description, callback
 	scrape.scrapeMessages(siteURL, ancestorSelector,titleSelector,linkSelector,descriptionSelector, function(err, newsArray){
-		res.write(newsArray);
+		res.write(newsArray.toString());
 		res.end();
 	});
 });
