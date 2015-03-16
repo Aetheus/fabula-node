@@ -13,5 +13,15 @@ router.get("/", function (req,res,next){
 	res.end();
 });
 
+router.post("/", function (req,res,next){
+	res.write("hello from post!");
+
+	if (req.body.title){
+		res.write(req.body.title);
+	}
+
+	res.end();
+});
+
 
 module.exports = router;
