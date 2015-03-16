@@ -36,10 +36,6 @@ router.get("/", function (req,res,next){
 router.post("/", function (req,res,next){
 	var sess = req.session;
 
-	if (myglobal.hasOwnProperty("newsArray")){
-		res.render("supervisordemo", { newsArray:myglobal.newsArray });
-	}
-
 	//localhost:3000/supervisordemo?title=DIV.subject&link=IMG&description=DIV.author&ancestor=DIV.topic.firstpost.starter&site=http%3A%2F%2Fwebspace.apiit.edu.my%2F
 	var titleSelector = (req.query.title != undefined) ? req.query.title : null;
 	var linkSelector = (req.query.link != undefined) ? req.query.link : null;
