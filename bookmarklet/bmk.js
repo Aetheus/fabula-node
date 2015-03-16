@@ -99,7 +99,7 @@ javascript:(
 
 
 		$("#FabulaSubmitButton").click(function(){
-		    $.get("https://fabula-node.herokuapp.com/scrape",
+		    $.post("https://fabula-node.herokuapp.com/scrape",
 		    {
 		        title: "Donald Duck",
 		        city: "Duckburg"
