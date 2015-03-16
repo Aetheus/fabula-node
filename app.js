@@ -40,6 +40,7 @@ app.use('/index', require("./routes/index"));
 app.use('/users', require("./routes/users"));
 app.use("/login", require("./routes/login"));
 app.use("/scrape", require("./routes/scrape"));
+app.use("/user", require("./routes/user"));
 //*****************************************************************************************
 
 
