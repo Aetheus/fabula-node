@@ -11,7 +11,7 @@ javascript:(
 		alert("jQuery loaded.");
 
 		/* Styles*/
-		$("<style type='text/css'> .highlighted{ border: 2px solid yellow;} #FabulaSysMenu{ position:fixed; top:10px; right:10px; width:200px; border: 2px solid black; background-color:white; font-size:large; text-align:center; z-index:9999; } </style>").appendTo("head");
+		$("<style type='text/css'> .highlighted{ border: 2px solid yellow;} #FabulaSysMenu{ position:fixed; top:10px; right:10px; width:500px; border: 2px solid black; background-color:white; font-size:large; text-align:center; z-index:9999; } </style>").appendTo("head");
 
 
 		/* Stores values of jQuery objects for the Title, Link, Description*/
@@ -19,17 +19,17 @@ javascript:(
 		var FabulaSysTitle = $();
 		var FabulaSysLink= $();
 		var FabulaSysDescription= $();
-		var FabulaSysCommonAncestor = $();
+		var FabulaSysAncestor = $();
 		var currentFabulaSysFocus = "title";
 
 		var FabulaSysTitleSelector = "";
 		var FabulaSysLinkSelector = "";
 		var FabulaSysDescriptionSelector = "";
-		var FabulaSysCommonAncestorSelector = "";
+		var FabulaSysAncestorSelector = "";
 
 		
 		/*create a floating "menu"*/
-		$("body").append("<div id='FabulaSysMenu'> <input id='FabulaSysTitleButton' type='button' value='Title' /><p id='FabulaSysTitleDisplay'></p> <input id='FabulaSysLinkButton' type='button' value='Link' /><p id='FabulaSysLinkDisplay'></p>  <input id='FabulaSysDescriptionButton' type='button' value='Description' /><p id='FabulaSysDescriptionDisplay'></p> <input id='FabulaSubmitButton' type='button' value='Submit to Web' /> </div>");
+		$("body").append("<div id='FabulaSysMenu'> <input id='FabulaSysTitleButton' type='button' value='Title' /><p id='FabulaSysTitleDisplay'></p> <input id='FabulaSysLinkButton' type='button' value='Link' /><p id='FabulaSysLinkDisplay'></p>  <input id='FabulaSysDescriptionButton' type='button' value='Description' /><p id='FabulaSysDescriptionDisplay'></p> <p id='FabulaSysAncestorDisplay'></p> <input id='FabulaSubmitButton' type='button' value='Submit to Web' /> </div>");
 
 
 		/*utility function to get common ancestor of link, description and title*/
@@ -40,7 +40,8 @@ javascript:(
 			$parentsc = $(c).parents();
 		
 			var found = null;
-		
+			
+			/*the calls to return false in the callbacks to "each" are meant to "break" the callbacks early when match is found*/
 			$parentsa.each(function() {
 				var thisa = this;
 				
@@ -53,13 +54,19 @@ javascript:(
 				        	found = this;
 				        	return false;
 				        });
+
+				        if (found) return false;
 				    }
 				});
 				
 				if (found) return false;
 		    });
-		
-		    return $(found);
+			
+			if (found != null){
+				return $(found);
+			}else{
+				return null;
+			}
 		}		
 
 
@@ -88,9 +95,13 @@ javascript:(
 		/*utility function to generate a jQuery selector for an element*/
 		function getSelectorText(elem){
 			var elemTagName = elem.prop("tagName");
-			var elemClasses = domListToString(elem[0].classList,".");
-			var selectText = stringBuilder(elemTagName,".",elemClasses);
-			return selectText;
+			if(elem.attr("class") !== undefined){
+				var elemClasses = domListToString(elem[0].classList,".");
+				var selectText = stringBuilder(elemTagName,".",elemClasses);
+				return selectText;
+			}else{
+				return elemTagName;
+			}
 		}
 
 		/*jqObj will be the jquery object we're passing. 
@@ -111,7 +122,12 @@ javascript:(
 				$("#FabulaSysDescriptionDisplay").text(FabulaSysDescription.text() + " " + FabulaSysDescriptionSelector);
 			} 
 
-			getCommonAncestor(FabulaSysTitle,FabulaSysLink);
+			
+			FabulaSysAncestor = getCommonAncestor(FabulaSysTitle,FabulaSysLink,FabulaSysDescription);
+			if(FabulaSysAncestor != null){
+				FabulaSysAncestorSelector = getSelectorText(FabulaSysAncestor);
+				$("#FabulaSysAncestorDisplay").text("Common Ancestors: " + FabulaSysAncestorSelector);
+			}
 		}
 
 		
@@ -180,11 +196,12 @@ javascript:(
 
 
 		$("#FabulaSubmitButton").click(function(){
-		    $.post("https://fabula-node.herokuapp.com/scrape",
+		    $.post("https://fabula-node.herokuapp.com/supervisordemo",
 		    {
 		        title: FabulaSysTitleSelector,
 		        link: FabulaSysLinkSelector,
-		        description: FabulaSysDescription
+		        description: FabulaSysDescriptionSelector,
+		        ancestor: FabulaSysAncestor
 		    },
 		    function(data, status){
 		        alert("Data: " + data + "\nStatus: " + status);
@@ -201,6 +218,6 @@ javascript:(
 
 
 		/* message to check we reached the end of script without major problems */
-		alert("we didnt crash!");
+		alert("Fabula plugin succesfully loaded");
 	}
 )();
