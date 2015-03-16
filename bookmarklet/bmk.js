@@ -23,7 +23,7 @@ javascript:(
 
 		
 		/*create a floating "menu"*/
-		$("body").append("<div id='FabulaSelectorMenu'> <input id='FabulaSelectorTitleButton' type='button' value='Title' /><p id='FabulaSelectorTitleDisplay'></p> <input id='FabulaSelectorLinkButton' type='button' value='Link' /><p id='FabulaSelectorLinkDisplay'></p>  <input id='FabulaSelectorDescriptionButton' type='button' value='Description' /><p id='FabulaSelectorDescriptionDisplay'></p> </div> <input id='FabulaSubmitButton' type='button' value='Submit to Web' />");
+		$("body").append("<div id='FabulaSelectorMenu'> <input id='FabulaSelectorTitleButton' type='button' value='Title' /><p id='FabulaSelectorTitleDisplay'></p> <input id='FabulaSelectorLinkButton' type='button' value='Link' /><p id='FabulaSelectorLinkDisplay'></p>  <input id='FabulaSelectorDescriptionButton' type='button' value='Description' /><p id='FabulaSelectorDescriptionDisplay'></p> <input id='FabulaSubmitButton' type='button' value='Submit to Web' /> </div>");
 
 
 		/*jqObj will be the jquery object we're passing. 
@@ -96,6 +96,19 @@ javascript:(
 			currentFabulaSelectorFocus = "link";
 			alert("Selecting for Link");
 		});
+
+
+		$("#FabulaSubmitButton").click(function(){
+		    $.get("https://fabula-node.herokuapp.com/scrape",
+		    {
+		        title: "Donald Duck",
+		        city: "Duckburg"
+		    },
+		    function(data, status){
+		        alert("Data: " + data + "\nStatus: " + status);
+		    });
+		});
+		
 
 		/*Old listener to disable link propogation
 		$("a").click(function(ev){
