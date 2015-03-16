@@ -11,43 +11,117 @@ javascript:(
 		alert("jQuery loaded.");
 
 		/* Styles*/
-		$("<style type='text/css'> .highlighted{ border: 2px solid yellow;} #FabulaSelectorMenu{ position:fixed; top:10px; right:10px; width:200px; border: 2px solid black; background-color:white; font-size:large; text-align:center; z-index:9999; } </style>").appendTo("head");
+		$("<style type='text/css'> .highlighted{ border: 2px solid yellow;} #FabulaSysMenu{ position:fixed; top:10px; right:10px; width:200px; border: 2px solid black; background-color:white; font-size:large; text-align:center; z-index:9999; } </style>").appendTo("head");
 
 
 		/* Stores values of jQuery objects for the Title, Link, Description*/
 		/* Current Selector Focus keeps track of which button was pressed*/
-		var FabulaSelectorTitle = $();
-		var FabulaSelectorLink= $();
-		var FabulaSelectorDescription= $();
-		var currentFabulaSelectorFocus = "title";
+		var FabulaSysTitle = $();
+		var FabulaSysLink= $();
+		var FabulaSysDescription= $();
+		var FabulaSysCommonAncestor = $();
+		var currentFabulaSysFocus = "title";
+
+		var FabulaSysTitleSelector = "";
+		var FabulaSysLinkSelector = "";
+		var FabulaSysDescriptionSelector = "";
+		var FabulaSysCommonAncestorSelector = "";
 
 		
 		/*create a floating "menu"*/
-		$("body").append("<div id='FabulaSelectorMenu'> <input id='FabulaSelectorTitleButton' type='button' value='Title' /><p id='FabulaSelectorTitleDisplay'></p> <input id='FabulaSelectorLinkButton' type='button' value='Link' /><p id='FabulaSelectorLinkDisplay'></p>  <input id='FabulaSelectorDescriptionButton' type='button' value='Description' /><p id='FabulaSelectorDescriptionDisplay'></p> <input id='FabulaSubmitButton' type='button' value='Submit to Web' /> </div>");
+		$("body").append("<div id='FabulaSysMenu'> <input id='FabulaSysTitleButton' type='button' value='Title' /><p id='FabulaSysTitleDisplay'></p> <input id='FabulaSysLinkButton' type='button' value='Link' /><p id='FabulaSysLinkDisplay'></p>  <input id='FabulaSysDescriptionButton' type='button' value='Description' /><p id='FabulaSysDescriptionDisplay'></p> <input id='FabulaSubmitButton' type='button' value='Submit to Web' /> </div>");
 
+
+		/*utility function to get common ancestor of link, description and title*/
+		/*credit to a stackoverflow page*/
+		function getCommonAncestor(a, b, c){
+			$parentsa = $(a).parents();
+			$parentsb = $(b).parents();
+			$parentsc = $(c).parents();
+		
+			var found = null;
+		
+			$parentsa.each(function() {
+				var thisa = this;
+				
+				$parentsb.each(function() {
+				    if (thisa == this){
+				        var thisb = this;
+
+				        $parentsc.each(function(){
+				        	if (thisb == this);
+				        	found = this;
+				        	return false;
+				        });
+				    }
+				});
+				
+				if (found) return false;
+		    });
+		
+		    return $(found);
+		}		
+
+
+		/*utility function to expand relative url to fully qualified url using DOM trickery*/
+		/*credit to a blog post: https://grack.com/blog/2009/11/17/absolutizing-url-in-javascript/*/
+		function makeQualified(url) {
+    		var div = document.createElement('div');
+    		div.innerHTML = "<a></a>";
+    		div.firstChild.href = url;
+    		div.innerHTML = div.innerHTML; 
+    		return div.firstChild.href;
+		}
+
+		/*utility functions to deal with strings*/
+		function domListToString(domList,separator){
+  			var arr = [];
+  			for (var i = 0, ref = arr.length = domList.length; i < ref; i++) {
+				arr[i] = domList[i];
+  			}
+  			return arr.join(separator);
+		}
+		function stringBuilder(){
+	  		return domListToString(arguments,"");
+		}
+
+		/*utility function to generate a jQuery selector for an element*/
+		function getSelectorText(elem){
+			var elemTagName = elem.prop("tagName");
+			var elemClasses = domListToString(elem[0].classList,".");
+			var selectText = stringBuilder(elemTagName,".",elemClasses);
+			return selectText;
+		}
 
 		/*jqObj will be the jquery object we're passing. 
 		  desc of object will be either "title", "link" or "description" */
-		function setFabulaSelectorMenu(jqObj, descOfObj){ 
+		function setFabulaSysMenu(jqObj, descOfObj){ 
 			if(descOfObj === "title"){
-				FabulaSelectorTitle = jqObj;
-				var jqObjDisplay = FabulaSelectorTitle.text() + "";
-				$("#FabulaSelectorTitleDisplay").html(jqObjDisplay);
+				FabulaSysTitle = jqObj;
+				FabulaSysTitleSelector = getSelectorText(jqObj);
+				$("#FabulaSysTitleDisplay").html(FabulaSysTitle.text() + " " + FabulaSysTitleSelector);
 			}else if(descOfObj === "link"){
-				FabulaSelectorLink = jqObj;
-				var jqObjDisplay = FabulaSelectorLink.attr("href") + "";
-				$("#FabulaSelectorLinkDisplay").text(jqObjDisplay);
+				FabulaSysLink = jqObj;
+				FabulaSysLinkSelector = getSelectorText(jqObj);
+				var fullURL = makeQualified(FabulaSysLink.attr("href"));
+				$("#FabulaSysLinkDisplay").text(fullURL + " " + FabulaSysLinkSelector);
 			}else{
-				FabulaSelectorDescription = jqObj;
-				var jqObjDisplay = FabulaSelectorTitle.text() + "";
-				$("#FabulaSelectorDescriptionDisplay").text(jqObjDisplay);
+				FabulaSysDescription = jqObj;
+				FabulaSysDescriptionSelector = getSelectorText(jqObj);
+				$("#FabulaSysDescriptionDisplay").text(FabulaSysDescription.text() + " " + FabulaSysDescriptionSelector);
 			} 
+
+			getCommonAncestor(FabulaSysTitle,FabulaSysLink);
 		}
 
-		/*Code to highlight clicked element*/
+		
+
+	
+
+		/*Code to highlight clicked element and call setFabulaSysMenu*/
 		var selectedEle = $();
-		function FabulaSelectorFunction(e){
-				if (typeof currentFabulaSelectorFocus === "undefined"){
+		function FabulaSysFunction(e){
+				if (typeof currentFabulaSysFocus === "undefined"){
 					alert("Error: Not selecting for either title, link or description");
 					return false;
 				}
@@ -66,43 +140,51 @@ javascript:(
 	
         		/*counter of selected elements
         		var numOfEle = selectedEle.length;
-        		var FabulaSelectorMenuText = "<p>" + numOfEle + "</p>";
-        		$("#FabulaSelectorMenu").html(FabulaSelectorMenuText);*/
-        		setFabulaSelectorMenu(tempSelectedEle,currentFabulaSelectorFocus);
+        		var FabulaSysMenuText = "<p>" + numOfEle + "</p>";
+        		$("#FabulaSysMenu").html(FabulaSysMenuText);*/
+        		setFabulaSysMenu(tempSelectedEle,currentFabulaSysFocus);
 
         		/*prevent link propogation*/
         		if(tempSelectedEle.is("a")){
 					e.stopPropagation();
         		}
 		}
-		document.addEventListener('click', FabulaSelectorFunction,false);
+		document.addEventListener('click', FabulaSysFunction,false);
 		/*no need to pass event to FabulaSelectoFunction as param when adding listener since jscript automatically passes event to the function as first arg */
 
-		$("#FabulaSelectorMenu").click(function(ev){
+		$("#FabulaSysMenu").click(function(ev){
 			ev.preventDefault();
 			ev.stopPropagation();
 		});
 
-		$("#FabulaSelectorTitleButton").click(function(ev){
+		$("#FabulaSysTitleButton").click(function(ev){
 			ev.preventDefault();
 			ev.stopPropagation();
-			currentFabulaSelectorFocus = "title";
+			currentFabulaSysFocus = "title";
 			alert("Selecting for Title");
 		});
 
-		$("#FabulaSelectorLinkButton").click(function(ev){
+		$("#FabulaSysLinkButton").click(function(ev){
 			ev.preventDefault();
 			ev.stopPropagation();
-			currentFabulaSelectorFocus = "link";
+			currentFabulaSysFocus = "link";
 			alert("Selecting for Link");
+		});
+
+		$("#FabulaSysDescriptionButton").click(function(ev){
+			ev.preventDefault();
+			ev.stopPropagation();
+			currentFabulaSysFocus = "desc";
+			alert("Selecting for Desc");
 		});
 
 
 		$("#FabulaSubmitButton").click(function(){
 		    $.post("https://fabula-node.herokuapp.com/scrape",
 		    {
-		        title: "Donald Duck",
-		        city: "Duckburg"
+		        title: FabulaSysTitleSelector,
+		        link: FabulaSysLinkSelector,
+		        description: FabulaSysDescription
 		    },
 		    function(data, status){
 		        alert("Data: " + data + "\nStatus: " + status);
@@ -114,7 +196,7 @@ javascript:(
 		$("a").click(function(ev){
 			ev.preventDefault();
 			ev.stopPropagation();
-			FabulaSelectorFunction(ev);
+			FabulaSysFunction(ev);
 		});*/
 
 
