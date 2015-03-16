@@ -12,8 +12,9 @@ router.all("/", function (req,res,next){
 router.get("/", function (req,res,next){
 			var sess = req.session;
 
-	res.write("hello from post!\n");
+	res.write("hello from get!\n");
 
+	
 	var titleSelector = (req.query.title != undefined) ? req.query.title : null;
 	var linkSelector = (req.query.link != undefined) ? req.query.link : null;
 	var descriptionSelector = (req.query.description != undefined) ? req.query.description : null;
@@ -25,6 +26,7 @@ router.get("/", function (req,res,next){
 		res.write(newsArray.toString());
 		res.end();
 	});
+	
 });
 
 router.post("/", function (req,res,next){

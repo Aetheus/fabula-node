@@ -147,7 +147,7 @@ javascript:(
 
         		var tempSelectedEle = $(e.target);
 
-        		tempSelectedEle.toggleClass("highlighted");
+        		/*tempSelectedEle.toggleClass("highlighted");*/
 
         		setFabulaSysMenu(tempSelectedEle,currentFabulaSysFocus);
 
