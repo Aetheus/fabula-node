@@ -26,7 +26,7 @@ router.post("/", function (req,res,next){
 		sess.title = req.body.title;
 		res.write("New title " + sess.title);
 	}else{
-		res.write("Old title " + sess.title);
+		res.write("Old title " + sess.title + ". Posted title: " + req.body.title);
 	}
 
 	res.end();
