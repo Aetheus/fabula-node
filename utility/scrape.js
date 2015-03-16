@@ -17,7 +17,7 @@ var exportObj = {
 		this.description = description;
 	},
 
-	scrapeMessages: function (siteURL, ancestor, title, link, description){
+	scrapeMessages: function (siteURL, ancestor, title, link, description, callback){
 		//if unable to provide title, link or description, at least pass "null" as params
 		//ancestor, title and link are all strings and jQuery selectors 
 		request(siteURL, function(err,resp,body){
@@ -31,6 +31,8 @@ var exportObj = {
 			}
 
 			var newsArray = [];
+
+			//the each function actually isn't async at all, so this works
 			searchBody.each(function (){
 				var title = (title != null) ? $(this).find(title) : null;
 				var link = (link != null) ? $(this).find(link) : null;
@@ -41,7 +43,9 @@ var exportObj = {
 				newsArray[newsArray.length] = newsItem;
 			});
 
-			return newsArray;
+			//pass the newArray to callback
+			//format: function (err, newsArray){ ... }
+			callback(null, newsArray);
 		});
 
 	},

@@ -201,7 +201,8 @@ javascript:(
 		        title: FabulaSysTitleSelector,
 		        link: FabulaSysLinkSelector,
 		        description: FabulaSysDescriptionSelector,
-		        ancestor: FabulaSysAncestor
+		        ancestor: FabulaSysAncestor,
+		        site: document.URL
 		    },
 		    function(data, status){
 		        alert("Data: " + data + "\nStatus: " + status);

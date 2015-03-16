@@ -20,21 +20,19 @@ router.get("/", function (req,res,next){
 router.post("/", function (req,res,next){
 	var sess = req.session;
 
-	res.write("hello from post!");
+	res.write("hello from post!\n");
 
 	var titleSelector = (req.body.title != undefined) ? req.body.title : null;
 	var linkSelector = (req.body.link != undefined) ? req.body.link : null;
 	var descriptionSelector = (req.body.description != undefined) ? req.body.description : null;
 	var ancestorSelector = (req.body.ancestor != undefined) ? req.body.ancestor : null;
+	var siteURL = req.body.site;
 
-
-	
-	res.write(fruits);
-
-
-
-
-	res.end();
+	//siteURL, ancestor, title, link, description, callback
+	scrape.scrapeMessages(siteURL, ancestorSelector,titleSelector,linkSelector,descriptionSelector, function(err, newsArray){
+		res.write(newsArray);
+		res.end();
+	});
 });
 
 
