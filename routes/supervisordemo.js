@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-var scrape = require("../utility/scrape")
+var scrape = require("../utility/scrape");
+var myglobal = require("../utility/myglobal");
 
 /*Enable CORS so that plugin can post to this route*/
 router.all("/", function (req,res,next){
@@ -10,21 +11,24 @@ router.all("/", function (req,res,next){
 });
 
 router.get("/", function (req,res,next){
-			var sess = req.session;
+	var sess = req.session;
 
-	res.write("hello from get!\n");
+	if (myglobal.hasOwnProperty("newsArray")){
+		res.render("supervisordemo", { newsArray:myglobal.newsArray });
+	}
 
-	
+	//localhost:3000/supervisordemo?title=DIV.subject&link=IMG&description=DIV.author&ancestor=DIV.topic.firstpost.starter&site=http%3A%2F%2Fwebspace.apiit.edu.my%2F
 	var titleSelector = (req.query.title != undefined) ? req.query.title : null;
 	var linkSelector = (req.query.link != undefined) ? req.query.link : null;
 	var descriptionSelector = (req.query.description != undefined) ? req.query.description : null;
 	var ancestorSelector = (req.query.ancestor != undefined) ? req.query.ancestor : null;
-	var siteURL = decodeURIComponent(req.query.site);
+	var siteURL = req.query.site;
 
 	//siteURL, ancestor, title, link, description, callback
 	scrape.scrapeMessages(siteURL, ancestorSelector,titleSelector,linkSelector,descriptionSelector, function(err, newsArray){
-		res.write(newsArray.toString());
-		res.end();
+		//like everything else in this demo, storing to global is TEMPORARY. in the real system, will read/write from/to postgresql
+		myglobal.newsArray = newsArray;
+		res.render("supervisordemo", { newsArray:newsArray });
 	});
 	
 });
@@ -32,18 +36,22 @@ router.get("/", function (req,res,next){
 router.post("/", function (req,res,next){
 	var sess = req.session;
 
-	res.write("hello from post!\n");
+	if (myglobal.hasOwnProperty("newsArray")){
+		res.render("supervisordemo", { newsArray:myglobal.newsArray });
+	}
 
-	var titleSelector = (req.body.title != undefined) ? req.body.title : null;
-	var linkSelector = (req.body.link != undefined) ? req.body.link : null;
-	var descriptionSelector = (req.body.description != undefined) ? req.body.description : null;
-	var ancestorSelector = (req.body.ancestor != undefined) ? req.body.ancestor : null;
-	var siteURL = req.body.site;
+	//localhost:3000/supervisordemo?title=DIV.subject&link=IMG&description=DIV.author&ancestor=DIV.topic.firstpost.starter&site=http%3A%2F%2Fwebspace.apiit.edu.my%2F
+	var titleSelector = (req.query.title != undefined) ? req.query.title : null;
+	var linkSelector = (req.query.link != undefined) ? req.query.link : null;
+	var descriptionSelector = (req.query.description != undefined) ? req.query.description : null;
+	var ancestorSelector = (req.query.ancestor != undefined) ? req.query.ancestor : null;
+	var siteURL = req.query.site;
 
 	//siteURL, ancestor, title, link, description, callback
 	scrape.scrapeMessages(siteURL, ancestorSelector,titleSelector,linkSelector,descriptionSelector, function(err, newsArray){
-		res.write(newsArray.toString());
-		res.end();
+		//like everything else in this demo, storing to global is TEMPORARY. in the real system, will read/write from/to postgresql
+		myglobal.newsArray = newsArray;
+		res.render("supervisordemo", { newsArray:newsArray });
 	});
 });
 
