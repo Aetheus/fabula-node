@@ -23,7 +23,7 @@ javascript:(
 
 		
 		/*create a floating "menu"*/
-		$("body").append("<div id='FabulaSelectorMenu'> <input id='FabulaSelectorTitleButton' type='button' value='Title' /><p id='FabulaSelectorTitleDisplay'></p> <input id='FabulaSelectorLinkButton' type='button' value='Link' /><p id='FabulaSelectorLinkDisplay'></p>  <input id='FabulaSelectorDescriptionButton' type='button' value='Description' /><p id='FabulaSelectorDescriptionDisplay'></p> </div>");
+		$("body").append("<div id='FabulaSelectorMenu'> <input id='FabulaSelectorTitleButton' type='button' value='Title' /><p id='FabulaSelectorTitleDisplay'></p> <input id='FabulaSelectorLinkButton' type='button' value='Link' /><p id='FabulaSelectorLinkDisplay'></p>  <input id='FabulaSelectorDescriptionButton' type='button' value='Description' /><p id='FabulaSelectorDescriptionDisplay'></p> </div> <input id='FabulaSubmitButton' type='button' value='Submit to Web' />");
 
 
 		/*jqObj will be the jquery object we're passing. 

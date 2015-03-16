@@ -10,6 +10,7 @@ router.all("/", function (req,res,next){
 
 router.get("/", function (req,res,next){
 	res.write("hello!");
+	res.end();
 });
 
 
