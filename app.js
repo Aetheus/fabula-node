@@ -7,6 +7,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cronjobs = require("./utility/cronjobs.js");
+var pg = require('pg');
 
 //importing myglobals
 var myglobal = require("./utility/myglobal.js");
@@ -40,7 +41,7 @@ app.use('/index', require("./routes/index"));
 app.use('/users', require("./routes/users"));
 app.use("/login", require("./routes/login"));
 app.use("/supervisordemo", require("./routes/supervisordemo"));
-app.use("/user", require("./routes/user"));
+app.use("/db", require("./routes/db"));
 //*****************************************************************************************
 
 
