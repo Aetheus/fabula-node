@@ -1,5 +1,5 @@
 CREATE TABLE tblDecoTheme (
-	thmUserID				TEXT	references tblUser(usrUserID),
+	thmUserID				TEXT	references tblUser(usrUserID) ON DELETE CASCADE ON UPDATE CASCADE,
 	thmDecoThemeColour1		TEXT,
 	thmDecoThemeColour2		TEXT,
 	thmDecoThemeFontSize	INTEGER,

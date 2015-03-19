@@ -1,5 +1,5 @@
 CREATE TABLE tblUserProfile (
-	upfUserID	TEXT	references tblUser(usrUserID),
+	upfUserID	TEXT	references tblUser(usrUserID) ON DELETE CASCADE ON UPDATE CASCADE,
 	upfUserProfileName	TEXT,
 	upfUserProfileSex	TEXT,
 	upfUserProfileEmail	TEXT

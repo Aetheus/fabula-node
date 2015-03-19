@@ -1,0 +1,13 @@
+execution order
+tblUser
+tblUserProfile
+tblDecoTheme
+tblSystemRole
+linkUserSystemRole
+
+tblFeedChannel
+tblTag
+linkFeedChannelTag
+
+tblFeedItem
+linkUserFeedItem

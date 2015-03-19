@@ -1,6 +1,6 @@
 CREATE TABLE tblFeedChannel (
 	fedFeedChannelID	SERIAL PRIMARY KEY,
-	fedUserID			TEXT references tblUser(usrUserID),
+	fedUserID			TEXT references tblUser(usrUserID) ON DELETE CASCADE ON UPDATE CASCADE,
 
 	fedFeedChannelName	TEXT NOT NULL,
 	fedFeedChannelDesc	TEXT,
@@ -9,5 +9,7 @@ CREATE TABLE tblFeedChannel (
 	fedFeedChannelTitleSelector	TEXT,
 	fedFeedChannelLinkSelector	TEXT,
 	fedFeedChannelDescriptionSelector TEXT,
-	fedFeedChannelAncestorSelector TEXT
+	fedFeedChannelAncestorSelector TEXT,
+
+	fedFeedChannelIsActive	BOOLEAN NOT NULL
 );

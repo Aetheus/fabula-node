@@ -1,9 +1,9 @@
 CREATE TABLE tblFeedItem (
 	fitFeedItemID			SERIAL PRIMARY KEY,
-	fitFeedChannelID		INTEGER references tblFeedChannel(fedFeedChannelID),
+	fitFeedChannelID		INTEGER references tblFeedChannel(fedFeedChannelID) ON DELETE CASCADE ON UPDATE CASCADE,
 	
-	fitFeedItemTitle		TEXT	PRIMARY KEY,
-	fitFeedItemLink			TEXT	PRIMARY KEY,
-	fitFeedItemDescription	TEXT	PRIMARY KEY
+	fitFeedItemTitle		TEXT,
+	fitFeedItemLink			TEXT,
+	fitFeedItemDescription	TEXT
 );
 
