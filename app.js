@@ -8,6 +8,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var cronjobs = require("./utility/cronjobs.js");
 var pg = require('pg');
+var password = require("password-hash-and-salt");
 
 //importing myglobals
 var myglobal = require("./utility/myglobal.js");

@@ -6,7 +6,15 @@
   </head>
   <body>
     <h1><%= title %></h1>
-    <h2> Live at Heroku!<h2>
+    
+    <h2> Welcome
+    	<% if (typeof username !== 'undefined') { %>
+    		, <%= username %>!
+    	<% } else { %>
+    		!
+    	<% } %>
+    </h2>
+
     <p>Welcome to <%= title %></p>
   </body>
 </html>
