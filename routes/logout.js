@@ -3,10 +3,10 @@ var router = express.Router();
 
 
 router.get("/", function (req,res,next){
-	var sess = req.session;
+	var session = req.session;
 
-	if (sess.username){
-		sess.username = null;
+	if (session.username){
+		session.username = null;
 	}
 
 	res.redirect("/index");	

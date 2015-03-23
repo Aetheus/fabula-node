@@ -5,10 +5,10 @@ var verifylogin = require("../utility/verifylogin");
 
 router.get("/", function (req,res,next){
 	var returnMsg = "Enter your details to login";
-	var sess = req.session;
+	var session = req.session;
 
-	if(sess.username){
-		returnMsg = "You're already logged in, " + sess.username;
+	if(session.username){
+		returnMsg = "You're already logged in, " + session.username;
 	}else{
 		returnMsg = "Enter your details to login";
 		res.render("login", { message:returnMsg });
@@ -26,6 +26,8 @@ router.post("/", function (req,res,next){
 	var sess = req.session;
 	var returnMsg = "Default return message";
 
+	var session = req.session;
+
 	if(req.body.username && req.body.password){
 		verifylogin(req.body.username, req.body.password, function (err, isVerified, user){
 			if (err){
@@ -34,19 +36,21 @@ router.post("/", function (req,res,next){
 			} 
 			
 			if (isVerified){
-				sess.username = req.body.username;
-				returnMsg = "You're already logged in, " + sess.username;
-				console.log("User signed in as " + sess.username);
+				session.username = req.body.username;
+				returnMsg = "You're already logged in, " + session.username;
+				console.log("User signed in as " + session.username);
+				res.redirect("/index");
 			}else{
 				returnMsg = "Incorrect username or password";
+				res.render("login", {message:returnMsg});
 			}
 			
-			res.render("login", {message:returnMsg});
+			
 		});
 
 	}else{
 		returnMsg="Enter username and password to proceed";
-		res.redirect("/index");
+		res.render("login", {message:returnMsg});
 	}
 
 })
