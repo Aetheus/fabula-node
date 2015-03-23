@@ -11,9 +11,10 @@ router.get("/", function (req,res,next){
 		returnMsg = "You're already logged in, " + sess.username;
 	}else{
 		returnMsg = "Enter your details to login";
+		res.render("login", { message:returnMsg });
 	}
 
-	res.render("login", { message:returnMsg });
+	
 });
 
 /*router.get("/makeerr", function (req,res,next){
@@ -31,7 +32,6 @@ router.post("/", function (req,res,next){
 				//this calls our error handler
 				next(err);	
 			} 
-
 			
 			if (isVerified){
 				sess.username = req.body.username;
@@ -40,13 +40,13 @@ router.post("/", function (req,res,next){
 			}else{
 				returnMsg = "Incorrect username or password";
 			}
-
+			
 			res.render("login", {message:returnMsg});
 		});
 
 	}else{
 		returnMsg="Enter username and password to proceed";
-		res.render("login", { message:returnMsg });
+		res.redirect("/index");
 	}
 
 })

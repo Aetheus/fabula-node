@@ -34,6 +34,19 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(session({secret: "this sentence is supposed to be the secret for cookie handling in the web app the longer it is the better haha im stretching this out pretty long huh"}));
 
 
+//middleware to make res/req objects accessible by our EJS template files
+//do NOT move this lower in the code hiereachy. It NEEDS to come before all the regular routes
+app.use(function(req, res, next){
+    res.locals.req = req;
+    res.locals.res = res;
+
+    var session = req.session;
+
+    next();
+    //next(req, res, next);
+});
+
+
 //*****************************************************************************************
 //setting the routers/controllers
 //You could add routes this way too: var users = require('./routes/users'); app.use('/users', users);
@@ -41,9 +54,12 @@ app.use('/', require("./routes/index"));
 app.use('/index', require("./routes/index"));
 app.use('/users', require("./routes/users"));
 app.use("/login", require("./routes/login"));
+app.use("/logout", require("./routes/logout"));
 app.use("/supervisordemo", require("./routes/supervisordemo"));
 app.use("/db", require("./routes/db"));
 //*****************************************************************************************
+
+
 
 
 // catch 404 and forward to error handler
