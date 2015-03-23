@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title><%= title %></title>
+    <% include layout/scripts.ejs %>
     <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
+</head>
+
+<body>
+  <% include layout/header.ejs %>
     <h1><%= title %></h1>
     
     <h2> Welcome
@@ -16,5 +19,7 @@
     </h2>
 
     <p>Welcome to <%= title %></p>
-  </body>
+<% include layout/footer.ejs %>
+</body>
+
 </html>

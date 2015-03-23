@@ -1,4 +1,7 @@
 <header>
 	<h1> Header here </h1>
 	<h2> thing in header </h2>
+	<% if (req.session.username) { %>
+	<a href="/logout">Logout</a> <br />
+	<% } %>
 </header>
