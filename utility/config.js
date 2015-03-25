@@ -2,8 +2,8 @@
 //to import into other modules/app.js, simply include the following: 
  /*	
 	//in othermodule.js
-	var myglobal = require("./utility/myglobal");
- 	console.log(myglobal.testMsg);
+	var config = require("./utility/config");
+ 	console.log(config.testMsg);
 
   */
 
@@ -14,7 +14,9 @@ var exportObj = {
 	},
 
 	//databaseURL for making connections to the postgresql db
-	databaseurl: process.env.DATABASE_URL || "postgres://postgres:remember@localhost:5432/mydb"
+	//DATABASE_URL=$(heroku config:get DATABASE_URL -a fabula-node) node .\bin\www
+	databaseurl: process.env.DATABASE_URL || "you forgot to set the DATABASE_URL environment! read config for more info!"
+	//"postgres://postgres:remember@localhost:5432/mydb"
 }
 
 module.exports = exportObj;

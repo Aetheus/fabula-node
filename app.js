@@ -10,9 +10,10 @@ var cronjobs = require("./utility/cronjobs.js");
 var pg = require('pg');
 var password = require("password-hash-and-salt");
 
-//importing myglobals
-var myglobal = require("./utility/myglobal.js");
-console.log(myglobal.testMsg + " in app.js")
+//importing configs
+var config = require("./utility/config.js");
+console.log(config.testMsg + " in app.js");
+console.log("DATABASEURL set to: " + config.databaseurl);
 
 //init app as express server object
 var app = express();

@@ -1,5 +1,5 @@
 var cronJob = require("cron").CronJob;
-var myglobal = require("./myglobal.js");
+var config = require("./config.js");
 
 //5 second timer
 //var mycron = new cronJob("*/5 * * * * *", function (){

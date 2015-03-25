@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var pg = require('pg');
 
-var myglobal = require("../utility/myglobal.js");
+var config = require("../utility/config.js");
 
 
 router.get('/', function (req, res,next) {
@@ -10,7 +10,7 @@ router.get('/', function (req, res,next) {
 	//postgres://localhost:5432/mydb
 	//var databaseurl = process.env.DATABASE_URL || "postgres://postgres:remember@localhost:5432/mydb";
 
-  	pg.connect(myglobal.databaseurl, function(err, client, done) {
+  	pg.connect(config.databaseurl, function(err, client, done) {
 
   		if (err){
   			console.log(err);

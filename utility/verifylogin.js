@@ -1,6 +1,6 @@
 var password = require("password-hash-and-salt");
 var pg = require("pg");
-var myglobal = require("../utility/myglobal");
+var config = require("../utility/config");
 
 //next function has the format of function (err, isVerified, user)
 var verifyLogin = function (providedusername, providedpassword, next){
@@ -12,7 +12,7 @@ var verifyLogin = function (providedusername, providedpassword, next){
 		next(new Error("Password not provided"));
 	}
 
-	pg.connect(myglobal.databaseurl, function(err, client, done) {
+	pg.connect(config.databaseurl, function(err, client, done) {
 		if (err){
 			console.error(err);
 			next(err); 
