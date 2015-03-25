@@ -14,8 +14,7 @@ var exportObj = {
 	},
 
 	//databaseURL for making connections to the postgresql db
-	//DATABASE_URL=$(heroku config:get DATABASE_URL -a fabula-node) node .\bin\www
-	databaseurl: process.env.DATABASE_URL || "you forgot to set the DATABASE_URL environment! read config for more info!"
+	databaseurl: process.env.DATABASE_URL || "postgres://postgres:remember@localhost:5432/mydb"
 	//"postgres://postgres:remember@localhost:5432/mydb"
 }
 
