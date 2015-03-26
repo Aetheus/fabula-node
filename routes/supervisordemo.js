@@ -20,8 +20,9 @@ router.get("/", function (req,res,next){
 	if (config.hasOwnProperty("newsArray")){
 		res.render("supervisordemo", { newsArray:config.newsArray });
 	}
-
+	//				/supervisordemo?title=DIV.subject&link=A&description=DIV.author&ancestor=DIV.topic.firstpost.starter&site=http%253A%252F%252Fwebspace.apiit.edu.my%252F
 	//localhost:3000/supervisordemo?title=DIV.subject&link=IMG&description=DIV.author&ancestor=DIV.topic.firstpost.starter&site=http%3A%2F%2Fwebspace.apiit.edu.my%2F
+	//								title=DIV.subject&link=A&description=DIV.author&ancestor=DIV.topic.firstpost.starter&site=http%3A%2F%2Fwebspace.apiit.edu.my%2F
 	var titleSelector = (req.query.title != undefined) ? req.query.title : null;
 	var linkSelector = (req.query.link != undefined) ? req.query.link : null;
 	var descriptionSelector = (req.query.description != undefined) ? req.query.description : null;
