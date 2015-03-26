@@ -55,5 +55,10 @@ router.post("/", function (req,res,next){
 	});
 });
 
+router.post("/hello", function(req,res,next){
+	res.write("hello");
+	res.end();
+});
+
 
 module.exports = router;
