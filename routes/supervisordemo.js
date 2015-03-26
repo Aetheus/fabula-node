@@ -4,11 +4,13 @@ var scrape = require("../utility/scrape");
 var config = require("../utility/config");
 
 /*Enable CORS so that plugin can post to this route*/
+//disabled it since its enabled in app.js
+/*
 router.all("/", function (req,res,next){
   res.header("Access-Control-Allow-Origin", "*");
   res.header("Access-Control-Allow-Headers", "X-Requested-With");
   next();
-});
+});*/
 
 router.get("/", function (req,res,next){
 	var sess = req.session;

@@ -38,7 +38,6 @@ app.use(session({secret: "this sentence is supposed to be the secret for cookie 
 //middleware to make res/req objects accessible by our EJS template files
 //do NOT move this lower in the code hiereachy. It NEEDS to come before all the regular routes
 app.use(function(req, res, next){
-    
     if (!res.locals.req || !res.locals.res){
         res.locals.req = req; 
         res.locals.res = res;   
@@ -47,6 +46,16 @@ app.use(function(req, res, next){
 
     next();
     //next(req, res, next);
+});
+
+
+//CORS to enable cross domain requests
+app.use(function(req, res, next) {
+    res.header('Access-Control-Allow-Credentials', true);
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    next();
 });
 
 
