@@ -2,10 +2,11 @@ var express = require("express");
 var router = express.Router();
 
 
-router.post("/", function (req,res, next){
-
-	var channelname = (req.body.name != undefined) ? req.body.name : null;
-	var imageLinkSelector = (req.body.imageLink != undefined) ? req.body.imageLink : null;
+//https://fabula-node.herokuapp.com/supervisordemo?title=DIV.subject&link=A&description=DIV.author&ancestor=DIV.topic.firstpost.starter&channelname=Webspace&imagelink=IMG&iscustom=true&site=http%3A%2F%2Fwebspace.apiit.edu.my%2F
+router.get("/", function (req,res, next){
+/*
+	var channelname = (req.body.channelname != undefined) ? req.body.channelname : null;
+	var imageLinkSelector = (req.body.imagelink != undefined) ? req.body.imagelink : null;
 	var channelIsCustom = (req.body.iscustom != undefined) ? req.body.iscustom : null;
 
 
@@ -14,7 +15,17 @@ router.post("/", function (req,res, next){
 	var descriptionSelector = (req.body.description != undefined) ? req.body.description : null;
 	var ancestorSelector = (req.body.ancestor != undefined) ? req.body.ancestor : null;
 	var siteURL = (req.body.site != undefined) ? req.body.site : null;
+*/
+	var channelname = (req.query.channelname != undefined) ? req.query.channelname : null;
+	var imageLinkSelector = (req.query.imagelink != undefined) ? req.query.imagelink : null;
+	var channelIsCustom = (req.query.iscustom != undefined) ? req.query.iscustom : null;
 
+
+	var titleSelector = (req.query.title != undefined) ? req.query.title : null;
+	var linkSelector = (req.query.link != undefined) ? req.query.link : null;
+	var descriptionSelector = (req.query.description != undefined) ? req.query.description : null;
+	var ancestorSelector = (req.query.ancestor != undefined) ? req.query.ancestor : null;
+	var siteURL = (req.query.site != undefined) ? req.query.site : null;
 
 	var isValid = true;
 	if (!siteURL || !(titleSelector || linkSelector || descriptionSelector || ancestorSelector) ){
@@ -39,9 +50,9 @@ router.post("/", function (req,res, next){
 				done();
 				if (err) return next(err);
 	
-			
+				console.log("Succesfully inserted: " + result);
 				
-	
+
 	
 	
 	
