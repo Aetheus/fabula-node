@@ -23,6 +23,7 @@ router.get('/', function (req, res,next) {
   	    	
 			if (err){ 
 				console.log(err);
+				client.end();
 				next(err); 
 			}else{
 				if(typeof result !== "undefined"){
@@ -30,6 +31,7 @@ router.get('/', function (req, res,next) {
 				}else{
 					res.send("No rows found");
 				}
+				client.end();
 			}
 		});
 

@@ -29,32 +29,32 @@ var exportObj = {
 		
 		(function (thisObj){	//start closure to create a block scope and freeze the value of "this"
 			request(siteURL, function(err,resp,body){
-				if (err) return err;
+				if (err) return callback(err);
 	
-					$ = cheerio.load(body);
-	
-					var searchBody = $(body);
-					if (ancestor !== null){
-						searchBody = $(ancestor);
-					}
-	
-					var newsArray = [];
-	
-	
-					//the each function actually isn't async at all, so this works
-					searchBody.each(function (){
-						var titleEle = (title != null) ? $(this).find(title) : null;
-						var linkEle = (link != null) ? $(this).find(link) : null;
-						var descriptionEle = (description != null) ? $(this).find(description) : null;
-	
-						var newsItem = new thisObj.News(titleEle.text(),linkEle.attr("href"),descriptionEle.text());
-						
-						newsArray[newsArray.length] = newsItem;
-					});
-	
-					//pass the newArray to callback
-					//format: function (err, newsArray){ ... }
-					callback(null, newsArray);
+				$ = cheerio.load(body);
+
+				var searchBody = $(body);
+				if (ancestor !== null){
+					searchBody = $(ancestor);
+				}
+
+				var newsArray = [];
+
+
+				//the each function actually isn't async at all, so this works
+				searchBody.each(function (){
+					var titleEle = (title != null) ? $(this).find(title) : null;
+					var linkEle = (link != null) ? $(this).find(link) : null;
+					var descriptionEle = (description != null) ? $(this).find(description) : null;
+
+					var newsItem = new thisObj.News(titleEle.text(),linkEle.attr("href"),descriptionEle.text());
+					
+					newsArray[newsArray.length] = newsItem;
+				});
+
+				//pass the newArray to callback
+				//format: function (err, newsArray){ ... }
+				callback(null, newsArray);
 			});
 		})(this);	//end closure
 	},
