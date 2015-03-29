@@ -51,6 +51,7 @@ app.use(function(req, res, next){
 
 //CORS to enable cross domain requests
 app.use(function(req, res, next) {
+    //note, res.header(...) is an alias for res.set(...)
     res.header('Access-Control-Allow-Credentials', true);
     res.header('Access-Control-Allow-Origin', req.headers.origin);
     res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
