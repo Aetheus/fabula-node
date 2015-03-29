@@ -5,8 +5,8 @@ var router = express.Router();
 router.get("/", function (req,res,next){
 	var session = req.session;
 
-	if (session.username){
-		session.username = null;
+	if (session.userid){
+		session.userid = null;
 	}
 
 	res.redirect("/index");	

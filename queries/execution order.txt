@@ -25,4 +25,10 @@ linkUserFeedItem
 	3.	to execute on heroku
 			cat test_table.sql | heroku pg:psql
 
+	4.	to save result to file (works on local client only)
+			\copy (Select * From foo) To '/tmp/test.csv' With CSV
+
+			/*this copies with headers*/
+			COPY table TO '/some_destdir/mycsv.csv' WITH CSV HEADER;
+
 */

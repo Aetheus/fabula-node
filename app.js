@@ -69,6 +69,7 @@ app.use("/login", require("./routes/login"));
 app.use("/logout", require("./routes/logout"));
 app.use("/supervisordemo", require("./routes/supervisordemo"));
 app.use("/db", require("./routes/db"));
+app.use("/subscribe", require("./routes/subscribe"));
 //*****************************************************************************************
 
 

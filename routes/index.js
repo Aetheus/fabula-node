@@ -5,8 +5,8 @@ var router = express.Router();
 router.get('/', function(req, res, next){
 	var session = req.session;
 
-	if (session.username){
-		res.render('index', { title: 'Express', username:session.username });
+	if (session.userid){
+		res.render('index', { title: 'Express', username:session.userid });
 	}else{
 		res.render('index', { title: 'Express' });
 	}

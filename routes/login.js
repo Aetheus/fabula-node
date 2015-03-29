@@ -7,8 +7,8 @@ router.get("/", function (req,res,next){
 	var returnMsg = "Enter your details to login";
 	var session = req.session;
 
-	if(session.username){
-		returnMsg = "You're already logged in, " + session.username;
+	if(session.userid){
+		returnMsg = "You're already logged in, " + session.userid;
 	}else{
 		returnMsg = "Enter your details to login";
 		res.render("login", { message:returnMsg });
@@ -23,7 +23,6 @@ router.get("/", function (req,res,next){
 
 router.post("/", function (req,res,next){
 	console.log("made it to post");
-	var sess = req.session;
 	var returnMsg = "Default return message";
 
 	var session = req.session;
@@ -36,9 +35,9 @@ router.post("/", function (req,res,next){
 			} 
 			
 			if (isVerified){
-				session.username = req.body.username;
-				returnMsg = "You're already logged in, " + session.username;
-				console.log("User signed in as " + session.username);
+				session.userid = req.body.username;
+				returnMsg = "You're already logged in, " + session.userid;
+				console.log("User signed in as " + session.userid);
 				res.redirect("/index");
 			}else{
 				returnMsg = "Incorrect username or password";
