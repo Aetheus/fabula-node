@@ -11,28 +11,11 @@ function createBoilerplate(){
 		function	: query
 		statement	: "INSERT INTO tblFeedChannel (fedUserID,fedFeedChannelName,fedFeedChannelDesc,fedFeedChannelURL,fedFeedChannelTitleSelector,fedFeedChannelLinkSelector,fedFeedChannelDescriptionSelector, fedFeedChannelImageLinkSelector, fedFeedChannelAncestorSelector,fedFeedChannelIsActive,fedFeedChannelIsCustom) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
 		args 		: [userid,channelname,descriptionSelector,siteURL,titleSelector,linkSelector,descriptionSelector,imageLinkSelector,ancestorSelector,true,channelIsCustom]
-		callback		: 	function (err, result){
-							done();
+		callback	: 	function (err, result){
 							if (err) return next(err);
 				
 							console.log("Succesfully inserted: " + result);
-			
-							client.end();
-							res.redirect("/index");
 						}
-		RESULT 		: 	client.query(
-						"INSERT INTO tblFeedChannel (fedUserID,fedFeedChannelName,fedFeedChannelDesc,fedFeedChannelURL,fedFeedChannelTitleSelector,fedFeedChannelLinkSelector,fedFeedChannelDescriptionSelector, fedFeedChannelImageLinkSelector, fedFeedChannelAncestorSelector,fedFeedChannelIsActive,fedFeedChannelIsCustom) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
-						, [userid,channelname,descriptionSelector,siteURL,titleSelector,linkSelector,descriptionSelector,imageLinkSelector,ancestorSelector,true,channelIsCustom],		 
-						function (err, result){
-							done();
-							if (err) return next(err);
-				
-							//do code stuff here
-							//res.redirect("/index");
-
-							client.end();
-						}
-						);
 		*/
 		query: function (statement, args, callback){
 		  	pg.connect(config.databaseurl, function(err, client, done) {
@@ -40,9 +23,9 @@ function createBoilerplate(){
 		  		
 	
 		  		//notice that client.query's callback has a param for RESULT. Don't confuse it with router.get's callback param, RES(PONSE)
-				client.query(statement, args, function (err2, result) {
+				client.query(statement, args, function (err, result) {
 					done();
-					if (err2) return callback(err2);
+					if (err) return callback(err);
 
 					callback(null, result);
 
@@ -51,6 +34,7 @@ function createBoilerplate(){
 			
 			});	
 		},
+
 	
 		/*
 		tblname		: A_table_name
@@ -90,11 +74,19 @@ function createBoilerplate(){
 			var args = values;
 			console.log("Executing SQL query: [" +statement + "] \n\tWith arguments: [" + args + "]");
 
-			//TEMPORARY: REMOVE THIS
-			callback(null, null);
+			
 			this.query(statement,args,callback);
-		}
+		},
 	
+
+		/*
+		tblname 	: tblFeedChannel
+		columns 	: [ "fedFeedChannelName", "fedFeedChannelDesc"]
+		whereDictionary: { "fedFeedChannelID":1 }
+		*/
+		select: function (tblname, columns, whereDictionary){
+
+		}
 	}
 
 	return boilerplate;

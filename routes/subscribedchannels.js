@@ -15,6 +15,8 @@ router.get("/", function (req,res,next){
 		if (err) throw err;
 
 		console.log("we didnt eplode. its a mackeral.");
+
+		res.end("hey ho");
 	});
 });
 
