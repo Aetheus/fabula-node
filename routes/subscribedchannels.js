@@ -6,17 +6,18 @@ var boilerplate = (require("../model/boilerplate.js"))();
 //html version
 router.get("/", function (req,res,next){
 	var dictionary = { 
-		"name": "bob",
-		"age" : 12,
-		"mexican" : true
+		"id" 	: 2,
+		"name" 	: "Hello from my new shiny insert function!" 
 	}
 
-	boilerplate.insert("tblFeedChannel", dictionary, function (err, result){
+	dictionary = null;
+	boilerplate.select(["*"], "tblFeedChannel", dictionary, function (err, result){
 		if (err) throw err;
 
-		console.log("we didnt eplode. its a mackeral.");
 
-		res.end("hey ho");
+		res.write("heya \n");
+		res.write("" + JSON.stringify(result));
+		res.end("\nhey ho");
 	});
 });
 

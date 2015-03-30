@@ -21,7 +21,7 @@ function createBoilerplate(){
 		  	pg.connect(config.databaseurl, function(err, client, done) {
 		  		if (err) return callback(err);
 		  		
-	
+				console.log("Attempting to execute SQL query: [" +statement + "] \n\tWith arguments: [" + args + "]");
 		  		//notice that client.query's callback has a param for RESULT. Don't confuse it with router.get's callback param, RES(PONSE)
 				client.query(statement, args, function (err, result) {
 					done();
@@ -31,10 +31,28 @@ function createBoilerplate(){
 
 					client.end();
 				});
-			
+				
 			});	
 		},
 
+		/* takes a key-value dictionary, spits out an object that contains a pair of "columns" and "values" arrays */
+		splitDictionary: function (dictionary, callback){
+			var columns = [];
+			var values = [];
+			for (var key in dictionary) {
+			  	if (dictionary.hasOwnProperty(key)) {
+			  	  	if (typeof key !== "string"){
+			  	  		return callback(new Error("Error: ALL keys must be strings!"));
+			  	  	}
+
+			  	  	columns[columns.length] = key;  
+			  	  	values[values.length] = dictionary[key];
+			  	}
+			}
+
+			var returnObj = { columns:columns, values:values };
+			return returnObj;
+		},
 	
 		/*
 		tblname		: A_table_name
@@ -49,16 +67,9 @@ function createBoilerplate(){
 				return callback(new Error("Error@Insert: Dictionary cannot be an empty object!"));
 			}
 
-			for (var key in dictionary) {
-			  	if (dictionary.hasOwnProperty(key)) {
-			  	  	if (typeof key !== "string"){
-			  	  		return callback(new Error("Error@Insert: ALL keys must be strings!"));
-			  	  	}
-
-			  	  	columns[columns.length] = key;  
-			  	  	values[values.length] = dictionary[key];
-			  	}
-			}
+			var returnObj = this.splitDictionary(dictionary, callback);
+			columns = returnObj.columns;
+			values = returnObj.values;
 
 			/*if there were 4 columns, this produces "$1,$2,$3,$4"*/
 			var parametricColumns = "";
@@ -72,7 +83,7 @@ function createBoilerplate(){
 
 			var statement = "INSERT INTO " + tblname + " (" + columnString + ") VALUES (" + parametricColumns + ")";
 			var args = values;
-			console.log("Executing SQL query: [" +statement + "] \n\tWith arguments: [" + args + "]");
+			
 
 			
 			this.query(statement,args,callback);
@@ -81,25 +92,41 @@ function createBoilerplate(){
 
 		/*
 		This is a BASIC select statement. No inherent support for INNER JOIN syntax queries
-		tblname 	: tblFeedChannel
-		columns 	: [ "fedFeedChannelName", "fedFeedChannelDesc"]
-		whereDictionary: { "fedFeedChannelID":1 }
+		tblname 		: "tblFeedChannel"
+		columns 		: [ "fedFeedChannelName", "fedFeedChannelDesc"]
+		whereDictionary	: { "fedFeedChannelID":1 } OR simply null if no "Where" condition needed
+		callback 		: function (err, result) { .. }
 		*/
-		select: function (tblname, columns, whereDictionary){
-			var isSpecificSelect = false;
-			if (typeof whereDictionary !== "undefined"){
-				isSpecificSelect = true;
+		select: function (columns,tblName,whereDictionary, callback){
+			if(columns.constructor !== Array){
+				return callback(new Error("An array of columns to select must be provided!"));
+			}
+			if (columns.length == 0){
+				return callback(new Error("You must supply at least one column to select from!"));
 			}
 
 
 			var columnString = columns.toString();
+			var args = [];
 
+			var statement = "SELECT " + columns + " FROM " + tblName;
+			if (whereDictionary){
+				var whereString = " WHERE ";
 
-			var statement = "SELECT " + 
+				var returnObj = this.splitDictionary(whereDictionary, callback);
+				columns = returnObj.columns;
+				values = returnObj.values;
 
+				for (var i=0; i<columns.length; i++){
+					whereString = whereString + columns[i] + "=" + "$" + (i+1) + " AND ";
+				}
+				whereString = whereString.slice(0,whereString.length-4);
 
+				statement = statement + whereString;
+				args = values;
+			}
 
-
+			this.query(statement,args,callback);
 		}
 	}
 
