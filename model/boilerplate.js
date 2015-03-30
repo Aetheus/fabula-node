@@ -80,11 +80,25 @@ function createBoilerplate(){
 	
 
 		/*
+		This is a BASIC select statement. No inherent support for INNER JOIN syntax queries
 		tblname 	: tblFeedChannel
 		columns 	: [ "fedFeedChannelName", "fedFeedChannelDesc"]
 		whereDictionary: { "fedFeedChannelID":1 }
 		*/
 		select: function (tblname, columns, whereDictionary){
+			var isSpecificSelect = false;
+			if (typeof whereDictionary !== "undefined"){
+				isSpecificSelect = true;
+			}
+
+
+			var columnString = columns.toString();
+
+
+			var statement = "SELECT " + 
+
+
+
 
 		}
 	}
