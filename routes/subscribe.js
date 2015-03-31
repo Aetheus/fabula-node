@@ -60,7 +60,7 @@ router.get("/hidden", function (req,res, next){
 router.post("/", function (req, res, next){
 	var channelname = (req.body.channelname != undefined) ? req.body.channelname : null;
 	var imageLinkSelector = (req.body.imagelink != undefined) ? req.body.imagelink : null;
-	var channelIsCustom = (req.body.iscustom != undefined) ? req.body.iscustom : null;
+	var channelIsCustom = (req.body.iscustom != undefined) ? req.body.iscustom : true;
 
 
 	var titleSelector = (req.body.title != undefined) ? req.body.title : null;
