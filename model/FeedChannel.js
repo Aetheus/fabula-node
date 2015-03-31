@@ -1,4 +1,4 @@
-var boilerplate = (require("boilerplate.js"))();
+var boilerplate = (require("./boilerplate.js"))();
 
 function returnModel() {
 	var FeedChannel = {
@@ -20,4 +20,4 @@ function returnModel() {
 
 
 
-module.exports = returnModel();
+module.exports = returnModel;
