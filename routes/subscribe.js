@@ -2,22 +2,12 @@ var express = require("express");
 var router = express.Router();
 var pg = require("pg");
 var config = require("../utility/config");
+var feedchannel = (require("../model/FeedChannel"))();
 
 
 //https://fabula-node.herokuapp.com/supervisordemo?title=DIV.subject&link=A&description=DIV.author&ancestor=DIV.topic.firstpost.starter&channelname=Webspace&imagelink=IMG&iscustom=true&site=http%3A%2F%2Fwebspace.apiit.edu.my%2F
-router.get("/", function (req,res, next){
-/*
-	var channelname = (req.body.channelname != undefined) ? req.body.channelname : null;
-	var imageLinkSelector = (req.body.imagelink != undefined) ? req.body.imagelink : null;
-	var channelIsCustom = (req.body.iscustom != undefined) ? req.body.iscustom : null;
-
-
-	var titleSelector = (req.body.title != undefined) ? req.body.title : null;
-	var linkSelector = (req.body.link != undefined) ? req.body.link : null;
-	var descriptionSelector = (req.body.description != undefined) ? req.body.description : null;
-	var ancestorSelector = (req.body.ancestor != undefined) ? req.body.ancestor : null;
-	var siteURL = (req.body.site != undefined) ? req.body.site : null;
-*/
+//remove this route eventually. its no longer necessary for us.
+router.get("/hidden", function (req,res, next){
 	var channelname = (req.query.channelname != undefined) ? req.query.channelname : null;
 	var imageLinkSelector = (req.query.imagelink != undefined) ? req.query.imagelink : null;
 	var channelIsCustom = (req.query.iscustom != undefined) ? req.query.iscustom : null;
@@ -63,6 +53,64 @@ router.get("/", function (req,res, next){
 		);
 	
 	});	
+});
+
+
+
+router.post("/", function (req, res, next){
+	var channelname = (req.body.channelname != undefined) ? req.body.channelname : null;
+	var imageLinkSelector = (req.body.imagelink != undefined) ? req.body.imagelink : null;
+	var channelIsCustom = (req.body.iscustom != undefined) ? req.body.iscustom : null;
+
+
+	var titleSelector = (req.body.title != undefined) ? req.body.title : null;
+	var linkSelector = (req.body.link != undefined) ? req.body.link : null;
+	var descriptionSelector = (req.body.description != undefined) ? req.body.description : null;
+	var ancestorSelector = (req.body.ancestor != undefined) ? req.body.ancestor : null;
+	var siteURL = (req.body.site != undefined) ? req.body.site : null;
+
+
+	var session = req.session;
+	var userid = (session.userid != undefined) ? session.userid : null;
+
+	var isValid = true;
+	if (!userid){
+		return next(new Error("You must be signed in to subscribe to a feed!"));
+	}
+	if (!siteURL || !(titleSelector || linkSelector || descriptionSelector || ancestorSelector) ){
+		return next(new Error("Site URL and either Title,Link or Description must be provided to subscribe to a site!"));
+	}
+
+
+	var insertDictionary = {
+		"fedUserID":userid,
+		"fedFeedChannelName":channelname,
+		"fedFeedChannelDesc":descriptionSelector,
+		"fedFeedChannelURL":siteURL,
+		"fedFeedChannelTitleSelector":titleSelector,
+		"fedFeedChannelLinkSelector":linkSelector,
+		"fedFeedChannelDescriptionSelector":descriptionSelector,
+		"fedFeedChannelImageLinkSelector" : imageLinkSelector,
+		"fedFeedChannelAncestorSelector" : ancestorSelector,
+		"fedFeedChannelIsActive" : true,
+		"fedFeedChannelIsCustom" : channelIsCustom
+	}
+	
+	feedchannel.insert(insertDictionary, function (err, result){
+		if (err){
+			if (err.code == 23505){
+				return next(new Error("Duplicate key error!"));		
+			}else{
+				return next(err);		
+			}
+		} 
+
+		res.write("Success(or not?) \n");
+		res.write("" + JSON.stringify(result));
+		res.end("\n - fin");
+	})
+  	
+
 });
 
 module.exports = router;
