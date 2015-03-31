@@ -75,9 +75,11 @@ router.post("/", function (req, res, next){
 
 	var isValid = true;
 	if (!userid){
-		return next(new Error("You must be signed in to subscribe to a feed!"));
+		res.end("hello?");
+		//return next(new Error("You must be signed in to subscribe to a feed!"));
 	}
 	if (!siteURL || !(titleSelector || linkSelector || descriptionSelector || ancestorSelector) ){
+		res.end("hello? 2?");
 		return next(new Error("Site URL and either Title,Link or Description must be provided to subscribe to a site!"));
 	}
 
@@ -111,7 +113,6 @@ router.post("/", function (req, res, next){
 		res.end("\n - fin");
 	})
   	
-
 });
 
 module.exports = router;
