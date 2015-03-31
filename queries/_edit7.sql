@@ -1,0 +1,7 @@
+ALTER TABLE tblFeedChannel DROP CONSTRAINT feedIdentity;
+
+ALTER TABLE tblFeedChannel 
+ADD CONSTRAINT feedIdentity UNIQUE
+(fedUserID,fedFeedChannelName,fedFeedChannelDesc,fedFeedChannelURL,
+	fedFeedChannelTitleSelector,fedFeedChannelLinkSelector,fedFeedChannelDescriptionSelector,
+	fedFeedChannelAncestorSelector ,fedFeedChannelIsActive);
