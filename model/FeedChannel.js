@@ -1,10 +1,23 @@
-var boilerplate = require("boilerplate.js");
+var boilerplate = (require("boilerplate.js"))();
 
+function returnModel() {
+	var FeedChannel = {
+		/*basic insert*/
+		insert: function (dictionary, callback) {
+			var tablename = "tblFeedChannel"; 
+			boilerplate(tablename, dictionary, callback);
+		},
 
-var FeedChannel = {
-	insert: function ()
+		select: function (columns,whereDictionary,callback) {
+			var tablename = "tblFeedChannel";
+			boilerplate(columns,tablename,whereDictionary,callback);
+		}
 
+	}
 
+	return FeedChannel;
 }
 
-module.exports = FeedChannel;
+
+
+module.exports = returnModel();

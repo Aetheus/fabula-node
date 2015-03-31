@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var boilerplate = (require("../model/boilerplate.js"))();
+var tblFeedItem = (require("../model/FeedChannel"))();
 
 
 //html version
@@ -11,9 +11,8 @@ router.get("/", function (req,res,next){
 	}
 
 	dictionary = null;
-	boilerplate.select(["*"], "tblFeedChannel", dictionary, function (err, result){
+	tblFeedItem.select(["*"], dictionary, function (err, result){
 		if (err) throw err;
-
 
 		res.write("heya \n");
 		res.write("" + JSON.stringify(result));
