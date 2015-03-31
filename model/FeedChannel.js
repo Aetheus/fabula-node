@@ -5,12 +5,12 @@ function returnModel() {
 		/*basic insert*/
 		insert: function (dictionary, callback) {
 			var tablename = "tblFeedChannel"; 
-			boilerplate(tablename, dictionary, callback);
+			boilerplate.insert(tablename, dictionary, callback);
 		},
 
 		select: function (columns,whereDictionary,callback) {
 			var tablename = "tblFeedChannel";
-			boilerplate(columns,tablename,whereDictionary,callback);
+			boilerplate.select(columns,tablename,whereDictionary,callback);
 		}
 
 	}
