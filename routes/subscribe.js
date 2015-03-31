@@ -75,11 +75,9 @@ router.post("/", function (req, res, next){
 
 	var isValid = true;
 	if (!userid){
-		res.end("hello?");
-		//return next(new Error("You must be signed in to subscribe to a feed!"));
+		return next(new Error("You must be signed in to subscribe to a feed!"));
 	}
 	if (!siteURL || !(titleSelector || linkSelector || descriptionSelector || ancestorSelector) ){
-		res.end("hello? 2?");
 		return next(new Error("Site URL and either Title,Link or Description must be provided to subscribe to a site!"));
 	}
 

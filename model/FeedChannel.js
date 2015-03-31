@@ -6,6 +6,7 @@ var boilerplate = (require("./boilerplate.js"))();
 //in the route that requires it, init it:
 //		var feedchannel = feedchannelmodel();
 //		feedchannel.insert( ... );
+// or maybe not? idk anymore. gdi
 
 function returnModel() {
 	var FeedChannel = {
