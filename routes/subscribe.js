@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var pg = require("pg");
 var config = require("../utility/config");
-var feedchannel = (require("../model/FeedChannel"))();
+var feedchannelmodel = (require("../model/FeedChannel");
 
 
 //https://fabula-node.herokuapp.com/supervisordemo?title=DIV.subject&link=A&description=DIV.author&ancestor=DIV.topic.firstpost.starter&channelname=Webspace&imagelink=IMG&iscustom=true&site=http%3A%2F%2Fwebspace.apiit.edu.my%2F
@@ -96,6 +96,7 @@ router.post("/", function (req, res, next){
 		"fedFeedChannelIsCustom" : channelIsCustom
 	}
 	
+	var feedchannel = feedchannelmodel();
 	feedchannel.insert(insertDictionary, function (err, result){
 		if (err){
 			if (err.code == 23505){

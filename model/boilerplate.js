@@ -11,7 +11,7 @@ function createBoilerplate(){
 		function	: query
 		statement	: "INSERT INTO tblFeedChannel (fedUserID,fedFeedChannelName,fedFeedChannelDesc,fedFeedChannelURL,fedFeedChannelTitleSelector,fedFeedChannelLinkSelector,fedFeedChannelDescriptionSelector, fedFeedChannelImageLinkSelector, fedFeedChannelAncestorSelector,fedFeedChannelIsActive,fedFeedChannelIsCustom) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
 		args 		: [userid,channelname,descriptionSelector,siteURL,titleSelector,linkSelector,descriptionSelector,imageLinkSelector,ancestorSelector,true,channelIsCustom]
-		callback	: 	function (err, result){
+		callback	: 	function (err, result, next){
 							if (err) return next(err);
 				
 							console.log("Succesfully inserted: " + result);

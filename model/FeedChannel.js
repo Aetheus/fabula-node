@@ -1,5 +1,12 @@
 var boilerplate = (require("./boilerplate.js"))();
 
+// how to use this class (and other models):
+//require it as usual: 
+//		var feedchannelmodel = (require("../model/FeedChannel");
+//in the route that requires it, init it:
+//		var feedchannel = feedchannelmodel();
+//		feedchannel.insert( ... );
+
 function returnModel() {
 	var FeedChannel = {
 		/*basic insert*/
