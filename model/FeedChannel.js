@@ -10,6 +10,10 @@ var boilerplate = (require("./boilerplate.js"))();
 
 function returnModel() {
 	var FeedChannel = {
+		modelObj: function (rowobj){
+
+		},
+		
 		/*basic insert*/
 		insert: function (dictionary, callback) {
 			var tablename = "tblFeedChannel"; 
