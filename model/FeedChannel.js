@@ -11,7 +11,7 @@ var boilerplate = (require("./boilerplate.js"))();
 function returnModel() {
 	var FeedChannel = {
 		modelObj: function (rowobj){
-
+			return null;
 		},
 		
 		/*basic insert*/
