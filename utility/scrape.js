@@ -4,7 +4,7 @@ var express = require("express");
 var cheerio = require("cheerio");
 var request = require("request");
 
-var feedchannel model = require(".tblFeedChannel")
+var feedchannel = require("../model/FeedChannel");
 
 var exportObj = {
 	testMsg: "Successfully exported scrape.js",
@@ -23,16 +23,13 @@ var exportObj = {
 		//if unable to provide title, link or description, at least pass "null" as params
 		//ancestor, title and link are all strings and jQuery selectors 
 		
-		console.log(title);
-		console.log(link);
-		console.log(description);
-		console.log("[space]");
-		var siteURL; 
-		var ancestor; 
-		var title; 
-		var link; 
-		var description;
-		var image; 
+		var siteURL = feedchannelrow.fedFeedChannelURL; 
+		var ancestor = feedchannelrow.fedFeedChannelAncestorSelector;
+		var title = feedchannelrow.fedFeedChannelTitleSelector;
+		var link= feedchannelrow.fedFeedChannelLinkSelector; 
+		var description = feedchannelrow.fedFeedChannelDescriptionSelector;
+		var image = feedchannelrow.fedFeedChannelImageSelector;
+					
 		
 		(function (thisObj){	//start closure to create a block scope and freeze the value of "this"
 			request(siteURL, function(err,resp,body){
@@ -53,7 +50,7 @@ var exportObj = {
 					var titleEle = (title != null) ? $(this).find(title) : null;
 					var linkEle = (link != null) ? $(this).find(link) : null;
 					var descriptionEle = (description != null) ? $(this).find(description) : null;
-
+					var imageEle = (image != null) ? $(this).find(image) : null;
 
 					var newsItem = new thisObj.News(titleEle.text(),linkEle.attr("href"),descriptionEle.text());
 					
