@@ -10,7 +10,7 @@ router.get("/", function (req,res,next){
 	var session = req.session;
 
 	if (!session.userid){
-		next("You must be logged in to view subscribed feeds");
+		return next("You must be logged in to view subscribed feeds");
 	}
 
 	var dictionary = { 
