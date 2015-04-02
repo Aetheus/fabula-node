@@ -1,5 +1,4 @@
-heroku pg:backups public-url --app fabula-
-
+heroku pg:backups capture --app fabula-node
 heroku pg:backups public-url b001 --app fabula-node
 
 then just download fro the url and rename to latest.dump
