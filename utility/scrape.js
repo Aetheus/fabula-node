@@ -9,7 +9,7 @@ var feedchannel = require("../model/FeedChannel");
 var exportObj = {
 	testMsg: "Successfully exported scrape.js",
 
-	News: function(title,link,description){
+	News: function(title,link,description, image){
 		//object constructor
 		//to call from within exportObj, just do this.createNews()
 
@@ -17,6 +17,7 @@ var exportObj = {
 		this.title = title;
 		this.link = link;
 		this.description = description;
+		this.image = image;
 	},
 
 	scrapeFeedChannel: function (feedchannelArray, callback) {
@@ -57,7 +58,8 @@ var exportObj = {
 						var descriptionEle = (description != null) ? $(this).find(description) : null;
 						var imageEle = (image != null) ? $(this).find(image) : null;
 
-						var newsItem = new thisObj.News(titleEle.text(),linkEle.attr("href"),descriptionEle.text());
+						var newsItem = new thisObj.News(titleEle.text(),linkEle.attr("href"),descriptionEle.text(),imageElelinkEle.attr("src"));
+						
 						newsArray[newsArray.length] = newsItem;
 					});
 
