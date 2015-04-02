@@ -22,13 +22,15 @@ router.get("/", function (req,res,next){
 
 		var newsarrayarray = [];
 
-		for (row in result.rows){
-			newsarrayarray[newsarrayarray.length] = scrape.scrapeFeedChannel(row);
+
+		for (var i = 0; i< result.rows.length ; i++){
+			//console.log(JSON.stringify(result.rows[i]));
+			newsarrayarray[newsarrayarray.length] = scrape.scrapeFeedChannel(result.rows[i]);
 		}
 
 
 		res.write("heya \n");
-		res.write("" + JSON.stringify(newsarrayarray));
+		res.write("" + JSON.stringify(result));
 		res.end("\nhey ho");
 	});
 });
