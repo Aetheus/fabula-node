@@ -6,7 +6,7 @@ var tblFeedItem = (require("../model/FeedChannel"))();
 
 //html version
 router.get("/", function (req,res,next){
-	var session = res.session;
+	var session = req.session;
 	var dictionary = { 
 		"feduserid" : session.userid
 	}
