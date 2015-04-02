@@ -58,7 +58,7 @@ var exportObj = {
 						var descriptionEle = (description != null) ? $(this).find(description) : null;
 						var imageEle = (image != null) ? $(this).find(image) : null;
 
-						var newsItem = new thisObj.News(titleEle.text(),linkEle.attr("href"),descriptionEle.text(),imageElelinkEle.attr("src"));
+						var newsItem = new thisObj.News(titleEle.text(),linkEle.attr("href"),descriptionEle.text(),imageEle.attr("src"));
 						
 						newsArray[newsArray.length] = newsItem;
 					});
