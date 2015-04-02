@@ -9,12 +9,12 @@ var scrape = require("../utility/scrape");
 router.get("/", function (req,res,next){
 	var session = req.session;
 
-	/*if (!session.userid){
+	if (!session.userid){
 		return next(new Error("You must be logged in to view subscribed feeds"));
-	}*/
+	}
 
 	var dictionary = { 
-		"feduserid" : "superuser"
+		"feduserid" : session.userid
 	}
 	dictionary = null;
 	
