@@ -9,29 +9,31 @@ var scrape = require("../utility/scrape");
 router.get("/", function (req,res,next){
 	var session = req.session;
 
-	if (!session.userid){
+	/*if (!session.userid){
 		return next(new Error("You must be logged in to view subscribed feeds"));
-	}
+	}*/
 
 	var dictionary = { 
-		"feduserid" : session.userid
+		"feduserid" : "superuser"
 	}
+	dictionary = null;
 	
 	tblFeedItem.select(["*"], dictionary, function (err, result){
 		if (err) throw err;
 
-		var newsarrayarray = [];
+
+		console.log(result.rows.length);
+		scrape.scrapeFeedChannel(result.rows, function (err, newsArrayArray) {
+			if (err) throw err;
+
+			res.write("" + JSON.stringify(newsArrayArray));
+			res.end();
+		});
 
 
-		for (var i = 0; i< result.rows.length ; i++){
-			//console.log(JSON.stringify(result.rows[i]));
-			newsarrayarray[newsarrayarray.length] = scrape.scrapeFeedChannel(result.rows[i]);
-		}
-
-
-		res.write("heya \n");
-		res.write("" + JSON.stringify(result));
-		res.end("\nhey ho");
+		//res.write("heya \n");
+		//res.write("" + JSON.stringify(result));
+		//res.end("\nhey ho");
 	});
 });
 
