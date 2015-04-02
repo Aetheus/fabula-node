@@ -53,12 +53,12 @@ var exportObj = {
 
 					//the each function actually isn't async at all, so this works
 					searchBody.each(function (){
-						var titleEle = (title != null) ? $(this).find(title) : null;
-						var linkEle = (link != null) ? $(this).find(link) : null;
-						var descriptionEle = (description != null) ? $(this).find(description) : null;
-						var imageEle = (image != null) ? $(this).find(image) : null;
+						var titleEle 		= (title != null) 		? $(this).find(title).text() : null;
+						var linkEle 		= (link != null) 		? $(this).find(link).attr("href") : null;
+						var descriptionEle 	= (description != null) ? $(this).find(description).text() : null;
+						var imageEle 		= (image != null) 		? $(this).find(image).attr("src") : null;
 
-						var newsItem = new thisObj.News(titleEle.text(),linkEle.attr("href"),descriptionEle.text(),imageEle.attr("src"));
+						var newsItem = new thisObj.News(titleEle,linkEle,descriptionEle,imageEle);
 						
 						newsArray[newsArray.length] = newsItem;
 					});
