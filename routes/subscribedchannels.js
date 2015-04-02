@@ -10,11 +10,12 @@ router.get("/", function (req,res,next){
 	var dictionary = { 
 		"feduserid" : session.userid
 	}
-
-	dictionary = null;
+	
 	tblFeedItem.select(["*"], dictionary, function (err, result){
 		if (err) throw err;
 
+
+		
 		res.write("heya \n");
 		res.write("" + JSON.stringify(result));
 		res.end("\nhey ho");
