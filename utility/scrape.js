@@ -19,7 +19,7 @@ var exportObj = {
 		this.description = description;
 	},
 
-	scrapeFeedChannelMessages: function (feedchannelrow) {
+	scrapeFeedChannel: function (feedchannelrow) {
 		//if unable to provide title, link or description, at least pass "null" as params
 		//ancestor, title and link are all strings and jQuery selectors 
 		

@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var tblFeedItem = (require("../model/FeedChannel"))();
 
+var scrape = require("../utility/scrape");
 
 
 //html version
@@ -14,10 +15,15 @@ router.get("/", function (req,res,next){
 	tblFeedItem.select(["*"], dictionary, function (err, result){
 		if (err) throw err;
 
+		var newsarrayarray = [];
 
-		
+		for (row in result.rows){
+			newsarrayarray[newsarrayarray.length] = scrape.scrapeFeedChannel(row);
+		}
+
+
 		res.write("heya \n");
-		res.write("" + JSON.stringify(result));
+		res.write("" + JSON.stringify(newsarrayarray));
 		res.end("\nhey ho");
 	});
 });
