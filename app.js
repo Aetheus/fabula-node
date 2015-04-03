@@ -15,6 +15,9 @@ var config = require("./utility/config.js");
 console.log(config.testMsg + " in app.js");
 console.log("DATABASEURL set to: " + config.databaseurl);
 
+//set pool size of postgresql
+pg.defaults.poolSize = 20;
+
 //init app as express server object
 var app = express();
 

@@ -27,7 +27,7 @@ var exportObj = {
 		
 		var newsArrayArray =[];
 
-		console.log("lenght is " + feedchannelArray.length);
+		//console.log("Scraper lenght is " + feedchannelArray.length);
 		for (var i = 0; i < feedchannelArray.length; i++){
 			
 			(function (i, feedchannelArray, newsArrayArray, thisObj){	//start closure to create a block scope and freeze the value of "this"
@@ -58,14 +58,12 @@ var exportObj = {
 
 					//the each function actually isn't async at all, so this works
 					searchBody.each(function (){
-						var titleText 		= (title && title !==reservedwords.dbNULL) 			 	?  $(this).find(title).text() : null;		
-						var linkHref 		= (link && link !==reservedwords.dbNULL) 				?  $(this).find(link).attr("href") : null;
-						var descriptionText = (description && description !==reservedwords.dbNULL) 	?  $(this).find(description).text() :null;
-						var imageSrc 		= (image && image !== reservedwords.dbNULL) 			?  $(this).find(image).attr("src") : null;
+						var titleText 		= (title && title !== reservedwords.dbNULL) 			?  $(this).find(title).text() 		: reservedwords.dbNULL;		
+						var linkHref 		= (link && link   !== reservedwords.dbNULL) 			?  $(this).find(link).attr("href") 	: reservedwords.dbNULL;
+						var descriptionText = (description && description !== reservedwords.dbNULL) ?  $(this).find(description).text() : reservedwords.dbNULL;
+						var imageSrc 		= (image && image !== reservedwords.dbNULL) 			?  $(this).find(image).attr("src") 	: reservedwords.dbNULL;
 
 						var newsItem = new thisObj.News(channelID, titleText,linkHref,descriptionText,imageSrc);
-						
-						console.log(newsItem);
 
 						newsArray[newsArray.length] = newsItem;
 					});
