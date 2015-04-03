@@ -26,8 +26,10 @@ var exportObj = {
 		//ancestor, title and link are all strings and jQuery selectors 
 		
 		var newsArrayArray =[];
+		var completed = 0; //use this to keep track of compelted requests so we can exit for loop
+		var errorArray =[]; //return this to the caller; if its empty at the end, we set it to null
 
-		//console.log("Scraper lenght is " + feedchannelArray.length);
+		console.log("Scraper lenght is " + feedchannelArray.length);
 		for (var i = 0; i < feedchannelArray.length; i++){
 			
 			(function (i, feedchannelArray, newsArrayArray, thisObj){	//start closure to create a block scope and freeze the value of "this"
@@ -43,8 +45,10 @@ var exportObj = {
 				var description = feedchannelrow.fedfeedchanneldescriptionselector;
 				var image = feedchannelrow.fedfeedchannelimageselector;
 
+				console.log("Currently scraping: \n" + JSON.stringify(feedchannelrow) + "\n");
 				request(siteURL, function(err,resp,body){
-					if (err) return callback(err);
+					completed++;
+					if (err) { errorArray[errorArray.length] = err; }
 		
 					$ = cheerio.load(body);
 
@@ -58,10 +62,10 @@ var exportObj = {
 
 					//the each function actually isn't async at all, so this works
 					searchBody.each(function (){
-						var titleText 		= (title && title !== reservedwords.dbNULL) 			?  $(this).find(title).text() 		: reservedwords.dbNULL;		
-						var linkHref 		= (link && link   !== reservedwords.dbNULL) 			?  $(this).find(link).attr("href") 	: reservedwords.dbNULL;
-						var descriptionText = (description && description !== reservedwords.dbNULL) ?  $(this).find(description).text() : reservedwords.dbNULL;
-						var imageSrc 		= (image && image !== reservedwords.dbNULL) 			?  $(this).find(image).attr("src") 	: reservedwords.dbNULL;
+						var titleText 		= (title && title !== reservedwords.dbNULL) 			?  ($(this).find(title).text() 			? $(this).find(title).text()		: reservedwords.dbNULL)	: reservedwords.dbNULL;		
+						var linkHref 		= (link && link   !== reservedwords.dbNULL) 			?  ($(this).find(link).attr("href") 	? $(this).find(link).attr("href") 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
+						var descriptionText = (description && description !== reservedwords.dbNULL) ?  ($(this).find(description).text() 	? $(this).find(description).text() 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
+						var imageSrc 		= (image && image !== reservedwords.dbNULL) 			?  ($(this).find(image).attr("src") 	? $(this).find(image).attr("src") 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
 
 						var newsItem = new thisObj.News(channelID, titleText,linkHref,descriptionText,imageSrc);
 
@@ -70,10 +74,12 @@ var exportObj = {
 
 					//this is the new stuff i added. if somethings up, delte these
 					newsArrayArray[newsArrayArray.length] = newsArray;
-					if (i == feedchannelArray.length - 1){
-						//pass the newArray to callback
-						//format: function (err, newsArray){ ... }
-						return callback(null, newsArrayArray);
+					if (completed == feedchannelArray.length){
+						//format: function (errArray, newsArray){ ... }
+						console.log(JSON.stringify(newsArrayArray));
+
+						if (errorArray.length == 0){ errorArray = null; }
+						return callback(errorArray, newsArrayArray);
 					}				
 				});
 			})(i, feedchannelArray, newsArrayArray, this);	//end closure
