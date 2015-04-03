@@ -9,11 +9,11 @@ var feedchannel = require("../model/FeedChannel");
 var exportObj = {
 	testMsg: "Successfully exported scrape.js",
 
-	News: function(title,link,description, image){
+	News: function(channelid, title,link,description, image){
 		//object constructor
 		//to call from within exportObj, just do this.createNews()
 
-
+		this.channelid = channelid;
 		this.title = title;
 		this.link = link;
 		this.description = description;
@@ -31,6 +31,10 @@ var exportObj = {
 			
 			(function (i, feedchannelArray, newsArrayArray, thisObj){	//start closure to create a block scope and freeze the value of "this"
 				var feedchannelrow = feedchannelArray[i];
+
+				var channelID = feedchannelrow.fedfeedchannelid;
+				var userID = feedchannelrow.feduserid;
+				
 				var siteURL = feedchannelrow.fedfeedchannelurl; 
 				var ancestor = feedchannelrow.fedfeedchannelancestorselector;
 				var title = feedchannelrow.fedfeedchanneltitleselector;
@@ -58,7 +62,7 @@ var exportObj = {
 						var descriptionText = (description) ?  $(this).find(description).text() :null;
 						var imageSrc 		= (image) 		?  $(this).find(image).attr("src") : null;
 
-						var newsItem = new thisObj.News(titleText,linkHref,descriptionText,imageSrc);
+						var newsItem = new thisObj.News(channelID, titleText,linkHref,descriptionText,imageSrc);
 						
 						console.log(newsItem);
 

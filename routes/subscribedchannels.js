@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-var tblFeedItem = (require("../model/FeedChannel"))();
+var tblFeedChannel= (require("../model/FeedChannel"))();
 
 var scrape = require("../utility/scrape");
 
@@ -18,7 +18,7 @@ router.get("/", function (req,res,next){
 	}
 	dictionary = null;
 	
-	tblFeedItem.select(["*"], dictionary, function (err, result){
+	tblFeedChannel.select(["*"], dictionary, function (err, result){
 		if (err) throw err;
 
 
@@ -29,11 +29,6 @@ router.get("/", function (req,res,next){
 			res.write("" + JSON.stringify(newsArrayArray));
 			res.end();
 		});
-
-
-		//res.write("heya \n");
-		//res.write("" + JSON.stringify(result));
-		//res.end("\nhey ho");
 	});
 });
 
