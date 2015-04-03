@@ -26,8 +26,8 @@ function returnFeedItem() {
 						var currentItem = dictionaryArray[i];
 
 						console.log("Attempting to insert new feed item for channel of ID: " + currentItem.fitfeedchannelid);
-						client.query("INSERT INTO tblFeedItem (fitfeedchannelid,fitfeeditemtitle,fitfeeditemlink,fitfeeditemdescription,fitfeeditemimagelink,fittimestamp) VALUES ($1,$2,$3,$4,$5,$6)",
-							[currentItem.fitfeedchannelid,currentItem.fitfeeditemtitle,currentItem.fitfeeditemlink,currentItem.fitfeeditemdescription,currentItem.fitfeeditemimagelink,"now()"], 
+						client.query("INSERT INTO tblFeedItem (fitfeedchannelid,fitfeeditemtitle,fitfeeditemlink,fitfeeditemdescription,fitfeeditemimagelink,fittimestamp,fitisread) VALUES ($1,$2,$3,$4,$5,$6,$7)",
+							[currentItem.fitfeedchannelid,currentItem.fitfeeditemtitle,currentItem.fitfeeditemlink,currentItem.fitfeeditemdescription,currentItem.fitfeeditemimagelink,"now()",false], 
 							function (err,result){
 								done();
 								if (err){
