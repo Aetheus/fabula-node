@@ -20,8 +20,20 @@ var exportVar = {
 			scrape.scrapeFeedChannel(result.rows, function (err, newsArrayArray) {
 				if (err) throw err;
 
+				//the array returned by scrape has nested arrays arranged by feedchannelid; we need to flatten this table befoer passing it to our MultiInsert
+				var flattenedNewsArray = [].concat.apply([],newsArrayArray);
+
+				var FeedItem = FeedItemImporter();
+
+				FeedItem.insertMulti(flattenedNewsArray, function (err, numInsertedRows){
+					if (err) return callback(err);
+
+					return callback(null,numInsertedRows);
+				});				
+
+				/*
 				for (var i = 0; i < newsArrayArray.length; i++){
-					(function (i,thisObj){ 	/*closure to freeze the value of i (i.e: create a "block scope")*/
+					(function (i,thisObj){ 	//closure to freeze the value of i (i.e: create a "block scope")
 						var channelNews = newsArrayArray[i]; //array of news items - see scrape.js for definition.
 
 						var FeedItem = FeedItemImporter();
@@ -29,13 +41,13 @@ var exportVar = {
 						FeedItem.insertMulti(channelNews, function (err, numInsertedRows){
 							if (err) return callback(err);
 
-							callback(null,numInsertedRows);
+							return callback(null,numInsertedRows);
 						});
 
 						
 
 					})(i,this); // end closure
-				}
+				}*/
 			});	
 		});
 	}	

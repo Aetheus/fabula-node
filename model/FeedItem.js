@@ -21,6 +21,7 @@ function returnFeedItem() {
 		insertMulti: function (dictionaryArray, callback){
 			pg.connect(config.databaseurl, function (err, client, done){
 				var success = 0;
+				var completed = 0;
 				for (var i =0; i < dictionaryArray.length; i++){
 					(function (i){
 						var currentItem = dictionaryArray[i];
@@ -30,6 +31,7 @@ function returnFeedItem() {
 							[currentItem.fitfeedchannelid,currentItem.fitfeeditemtitle,currentItem.fitfeeditemlink,currentItem.fitfeeditemdescription,currentItem.fitfeeditemimagelink,"now()",false], 
 							function (err,result){
 								done();
+								completed++;
 								if (err){
 									if (err.code == 23505){
 										console.log("Attempting to insert duplicate of existing news item; Safely ignoring.");
@@ -40,8 +42,8 @@ function returnFeedItem() {
 									success++;
 								}
 
-								if (i == dictionaryArray.length -1){ 
-									callback(null,success);
+								if (completed == dictionaryArray.length){ 
+									return callback(null,success);
 									client.end(); 
 								}
 							}

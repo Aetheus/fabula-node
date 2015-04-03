@@ -29,7 +29,7 @@ var exportObj = {
 		var completed = 0; //use this to keep track of compelted requests so we can exit for loop
 		var errorArray =[]; //return this to the caller; if its empty at the end, we set it to null
 
-		console.log("Scraper lenght is " + feedchannelArray.length);
+		console.log("Scraping " + feedchannelArray.length + " sites for new news . . .");
 		for (var i = 0; i < feedchannelArray.length; i++){
 			
 			(function (i, feedchannelArray, newsArrayArray, thisObj){	//start closure to create a block scope and freeze the value of "this"
@@ -45,38 +45,41 @@ var exportObj = {
 				var description = feedchannelrow.fedfeedchanneldescriptionselector;
 				var image = feedchannelrow.fedfeedchannelimageselector;
 
-				console.log("Currently scraping: \n" + JSON.stringify(feedchannelrow) + "\n");
+				//console.log("Currently scraping: \n" + JSON.stringify(feedchannelrow) + "\n");
 				request(siteURL, function(err,resp,body){
-					completed++;
-					if (err) { errorArray[errorArray.length] = err; }
-		
-					$ = cheerio.load(body);
-
-					var searchBody = $(body);
-					if (ancestor !== null){
-						searchBody = $(ancestor);
+					completed++;	// one request completed; regardless of errorless or not
+					
+					if (err) { 
+						errorArray[errorArray.length] = err; 
+					}else{
+						$ = cheerio.load(body);
+	
+						var searchBody = $(body);
+						if (ancestor !== null){
+							searchBody = $(ancestor);
+						}
+	
+						var newsArray = [];
+	
+	
+						//the each function actually isn't async at all, so this works
+						searchBody.each(function (){
+							var titleText 		= (title && title !== reservedwords.dbNULL) 			?  ($(this).find(title).text() 			? $(this).find(title).text()		: reservedwords.dbNULL)	: reservedwords.dbNULL;		
+							var linkHref 		= (link && link   !== reservedwords.dbNULL) 			?  ($(this).find(link).attr("href") 	? $(this).find(link).attr("href") 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
+							var descriptionText = (description && description !== reservedwords.dbNULL) ?  ($(this).find(description).text() 	? $(this).find(description).text() 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
+							var imageSrc 		= (image && image !== reservedwords.dbNULL) 			?  ($(this).find(image).attr("src") 	? $(this).find(image).attr("src") 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
+	
+							var newsItem = new thisObj.News(channelID, titleText,linkHref,descriptionText,imageSrc);
+	
+							newsArray[newsArray.length] = newsItem;
+						});
+	
+						newsArrayArray[newsArrayArray.length] = newsArray;
 					}
 
-					var newsArray = [];
-
-
-					//the each function actually isn't async at all, so this works
-					searchBody.each(function (){
-						var titleText 		= (title && title !== reservedwords.dbNULL) 			?  ($(this).find(title).text() 			? $(this).find(title).text()		: reservedwords.dbNULL)	: reservedwords.dbNULL;		
-						var linkHref 		= (link && link   !== reservedwords.dbNULL) 			?  ($(this).find(link).attr("href") 	? $(this).find(link).attr("href") 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
-						var descriptionText = (description && description !== reservedwords.dbNULL) ?  ($(this).find(description).text() 	? $(this).find(description).text() 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
-						var imageSrc 		= (image && image !== reservedwords.dbNULL) 			?  ($(this).find(image).attr("src") 	? $(this).find(image).attr("src") 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
-
-						var newsItem = new thisObj.News(channelID, titleText,linkHref,descriptionText,imageSrc);
-
-						newsArray[newsArray.length] = newsItem;
-					});
-
-					//this is the new stuff i added. if somethings up, delte these
-					newsArrayArray[newsArrayArray.length] = newsArray;
 					if (completed == feedchannelArray.length){
 						//format: function (errArray, newsArray){ ... }
-						console.log(JSON.stringify(newsArrayArray));
+						//console.log(JSON.stringify(newsArrayArray));
 
 						if (errorArray.length == 0){ errorArray = null; }
 						return callback(errorArray, newsArrayArray);
