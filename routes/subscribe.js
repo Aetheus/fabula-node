@@ -2,6 +2,8 @@ var express = require("express");
 var router = express.Router();
 var pg = require("pg");
 var config = require("../utility/config");
+var reservedwords = require("../utility/reservedwords");
+
 var feedchannel = (require("../model/FeedChannel"))();
 
 
@@ -9,14 +11,16 @@ var feedchannel = (require("../model/FeedChannel"))();
 //remove this route eventually. its no longer necessary for us.
 
 router.post("/", function (req, res, next){
-	var channelname = (req.body.channelname != undefined) ? req.body.channelname : null;
-	var imageLinkSelector = (req.body.imagelink != undefined) ? req.body.imagelink : null;
-	var channelIsCustom = (req.body.iscustom != undefined) ? req.body.iscustom : true;
-	var titleSelector = (req.body.title != undefined) ? req.body.title : null;
-	var linkSelector = (req.body.link != undefined) ? req.body.link : null;
-	var descriptionSelector = (req.body.description != undefined) ? req.body.description : null;
-	var ancestorSelector = (req.body.ancestor != undefined) ? req.body.ancestor : null;
-	var siteURL = (req.body.site != undefined) ? req.body.site : null;
+	var channelname = (req.body.channelname != undefined) 		? req.body.channelname : null;
+	var channelIsCustom = (req.body.iscustom != undefined) 		? req.body.iscustom : true;
+
+	var titleSelector = (req.body.title != undefined) 			? req.body.title : reservedwords.dbNULL;
+	var linkSelector = (req.body.link != undefined) 			? req.body.link : reservedwords.dbNULL;
+	var descriptionSelector = (req.body.description != undefined) ? req.body.description : reservedwords.dbNULL;
+	var imageLinkSelector = (req.body.imagelink != undefined) 	? req.body.imagelink : reservedwords.dbNULL;
+	
+	var ancestorSelector = (req.body.ancestor != undefined) 	? req.body.ancestor : null;
+	var siteURL = (req.body.site != undefined) 					? req.body.site : null;
 
 	var session = req.session;
 	var userid = (session.userid != undefined) ? session.userid : null;

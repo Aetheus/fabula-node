@@ -4,7 +4,8 @@ var express = require("express");
 var cheerio = require("cheerio");
 var request = require("request");
 
-var feedchannel = require("../model/FeedChannel");
+var reservedwords = require("../utility/reservedwords");
+
 
 var exportObj = {
 	testMsg: "Successfully exported scrape.js",
@@ -13,11 +14,11 @@ var exportObj = {
 		//object constructor
 		//to call from within exportObj, just do this.createNews()
 
-		this.channelid = channelid;
-		this.title = title;
-		this.link = link;
-		this.description = description;
-		this.image = image;
+		this.fitfeedchannelid 			= channelid;
+		this.fitfeeditemtitle 			= title;
+		this.fitfeeditemlink  			= link;
+		this.fitfeeditemdescription 	= description;
+		this.fitfeeditemimagelink 		= image;
 	},
 
 	scrapeFeedChannel: function (feedchannelArray, callback) {
@@ -57,10 +58,10 @@ var exportObj = {
 
 					//the each function actually isn't async at all, so this works
 					searchBody.each(function (){
-						var titleText 		= (title) 		?  $(this).find(title).text() : null;		
-						var linkHref 		= (link) 		?  $(this).find(link).attr("href") : null;
-						var descriptionText = (description) ?  $(this).find(description).text() :null;
-						var imageSrc 		= (image) 		?  $(this).find(image).attr("src") : null;
+						var titleText 		= (title && title !==reservedwords.dbNULL) 			 	?  $(this).find(title).text() : null;		
+						var linkHref 		= (link && link !==reservedwords.dbNULL) 				?  $(this).find(link).attr("href") : null;
+						var descriptionText = (description && description !==reservedwords.dbNULL) 	?  $(this).find(description).text() :null;
+						var imageSrc 		= (image && image !== reservedwords.dbNULL) 			?  $(this).find(image).attr("src") : null;
 
 						var newsItem = new thisObj.News(channelID, titleText,linkHref,descriptionText,imageSrc);
 						

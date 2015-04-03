@@ -68,10 +68,12 @@ app.use('/index', require("./routes/index"));
 app.use('/users', require("./routes/users"));
 app.use("/login", require("./routes/login"));
 app.use("/logout", require("./routes/logout"));
-app.use("/supervisordemo", require("./routes/supervisordemo"));
 app.use("/db", require("./routes/db"));
 app.use("/subscribe", require("./routes/subscribe"));
 app.use("/subscribedchannels", require("./routes/subscribedchannels"));
+
+app.use("/supervisordemo", require("./routes/supervisordemo"));
+app.use("/updaterdemo", require("./routes/updaterdemo"));
 //*****************************************************************************************
 
 
