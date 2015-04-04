@@ -22,8 +22,7 @@ var verifyLogin = function (providedusername, providedpassword, next){
 		client.query("SELECT * FROM tblUser WHERE usrUserID=$1",[providedusername], function(err, result) {
 			done();	//client pooling
 			if (err){ 
-				console.error(err);
-				next(err);
+				return next(err);
 			}
 
 			//result.rows
