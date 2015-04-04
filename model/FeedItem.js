@@ -5,15 +5,36 @@ var config = require("../utility/config");
 function returnFeedItem() {
 	var FeedItem = {
 		tablename: "tblFeedItem",
-	
+		
+		// simple select
 		select: function (columns,whereDictionary,callback) {
 			boilerplate.select(columns,this.tablename,whereDictionary,callback);
 		},
 	
 		/*remember, err.code == 23505 is the code for duplicate keys!*/
-		/* ONLY ONLY ONLY USE THIS IF INSERTING ---ONE--- ROW AT A TIME!*/
+		/* simple insert: ONLY ONLY ONLY USE THIS IF INSERTING ---ONE--- ROW AT A TIME!*/
 		insert: function (dictionary, callback) {
 			boilerplate.insert(this.tablename,dictionary,callback);
+		},
+
+		// select by userID
+		//callback format: function (err, result)
+		selectWhereUserID: function (userid, callback){
+			pg.connect(config.databaseurl, function (err, client, done){
+				client.query("SELECT tblfeeditem.* FROM tblfeedchannel, tblfeeditem WHERE tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = $1",
+				 	[userid], 
+				 	function (err, result){
+				 		done();
+						if (err) return callback(err);
+						
+
+						callback(null, result);
+						client.end();
+				 	}
+				);
+
+			});
+			//select tblfeeditem.*, tblfeedchannel.feduserid from tblfeedchannel, tblfeeditem where tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = 'superuser';
 		},
 	
 		/*remember, err.code == 23505 is the code for duplicate keys!*/

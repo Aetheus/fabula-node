@@ -15,12 +15,8 @@ router.get("/", function (req,res,next){
 	if (!session.userid){
 		return next(new Error("You must be logged in to view subscribed feeds"));
 	}
-
-	var dictionary = { 
-		"fituserid" : session.userid
-	};
 	
-	tblFeedItem.select(["*"], dictionary, function (err, result){
+	tblFeedItem.selectWhereUserID(session.userid, function (err, result){
 		if (err) return next(err);
 
 		res.write(JSON.stringify(result.rows));
@@ -31,12 +27,22 @@ router.get("/", function (req,res,next){
 
 //JSON version
 router.get("/JSON",function (req,res,next){
-	res.header("Content-Type", "application/json");
+	var session = req.session;
+	var tblFeedChannel = tblFeedChannelImporter();
+	var tblFeedItem = tblFeedItemImporter();
 
+	if (!session.userid){
+		return next(new Error("You must be logged in to view subscribed feeds"));
+	}
+	
+	tblFeedItem.selectWhereUserID(session.userid, function (err, result){
+		if (err) return next(err);
 
-
-
+		res.json(result.rows);
+		res.end();
+	});
 });
+
 
 //hidden
 router.get("/hidden", function (req,res,next){
