@@ -1,6 +1,7 @@
 var express = require("express");
 var router = express.Router();
-var tblFeedChannel= (require("../model/FeedChannel"))();
+var tblFeedChannelImporter = require("../model/FeedChannel");
+var tblFeedItemImporter = require("../model/FeedItem");
 
 var scrape = require("../utility/scrape");
 
@@ -8,6 +9,7 @@ var scrape = require("../utility/scrape");
 //html version
 router.get("/", function (req,res,next){
 	var session = req.session;
+	var tblFeedChannel = tblFeedChannelImporter();
 
 	if (!session.userid){
 		return next(new Error("You must be logged in to view subscribed feeds"));
@@ -15,20 +17,13 @@ router.get("/", function (req,res,next){
 
 	var dictionary = { 
 		"feduserid" : session.userid
-	}
-	dictionary = null;
+	};
 	
-	tblFeedChannel.select(["*"], dictionary, function (err, result){
-		if (err) throw err;
+	tblFeedItem.select(["*"], dictionary, function (err, result){
+		if (err) next(err);
 
-
-		console.log(result.rows.length);
-		scrape.scrapeFeedChannel(result.rows, function (err, newsArrayArray) {
-			if (err) throw err;
-
-			res.write("" + JSON.stringify(newsArrayArray));
-			res.end();
-		});
+		res.write(JSON.stringify(result.rows));
+		res.end();
 	});
 });
 
