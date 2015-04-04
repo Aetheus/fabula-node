@@ -17,11 +17,11 @@ router.get("/", function (req,res,next){
 	}
 
 	var dictionary = { 
-		"feduserid" : session.userid
+		"fituserid" : session.userid
 	};
 	
 	tblFeedItem.select(["*"], dictionary, function (err, result){
-		if (err) next(err);
+		if (err) return next(err);
 
 		res.write(JSON.stringify(result.rows));
 		res.end();
