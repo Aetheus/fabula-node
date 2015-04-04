@@ -10,6 +10,7 @@ var scrape = require("../utility/scrape");
 router.get("/", function (req,res,next){
 	var session = req.session;
 	var tblFeedChannel = tblFeedChannelImporter();
+	var tblFeedItem = tblFeedItemImporter();
 
 	if (!session.userid){
 		return next(new Error("You must be logged in to view subscribed feeds"));
