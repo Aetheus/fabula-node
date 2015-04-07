@@ -11,6 +11,7 @@ router.get("/", function (req, res, next){
 	}
 
 	if (!(req.query.username && req.query.password)){
+
 		returnObj.name = "careless guest";
 		res.json(returnObj);
 	}else{
@@ -39,6 +40,7 @@ router.post("/", function (req, res, next){
 	}
 
 	if (!(req.body.username && req.body.password)){
+		console.log("Failed login: Username=" + req.body.username + ", Password=" + req.body.password);
 		returnObj.name = "careless guest";
 		res.json(returnObj);
 	}else{
