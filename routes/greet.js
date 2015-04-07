@@ -42,8 +42,9 @@ router.post("/", function (req, res, next){
 	if (!(req.body.username && req.body.password)){
 		console.log("Failed login: Username=" + req.body.username + ", Password=" + req.body.password);
 		returnObj.name = "careless guest";
-		res.json(returnObj);
-		res.end();
+		//res.json(returnObj);
+		res.setHeader('Content-Type', 'application/json');
+		res.end(JSON.stringify(returnObj));
 	}else{
 		verifylogin(req.body.username, req.body.password, function (err, isVerified, userRow){
 			if (err) return next(err);
@@ -55,8 +56,9 @@ router.post("/", function (req, res, next){
 				returnObj.name = "unauthorized guest";
 			}
 
-			res.json(returnObj);
-			res.end();
+			//res.json(returnObj);
+			res.setHeader('Content-Type', 'application/json');
+			res.end(JSON.stringify(returnObj));
 		});
 	}
 
