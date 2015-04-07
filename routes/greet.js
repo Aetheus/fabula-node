@@ -43,6 +43,7 @@ router.post("/", function (req, res, next){
 		console.log("Failed login: Username=" + req.body.username + ", Password=" + req.body.password);
 		returnObj.name = "careless guest";
 		res.json(returnObj);
+		res.end();
 	}else{
 		verifylogin(req.body.username, req.body.password, function (err, isVerified, userRow){
 			if (err) return next(err);
@@ -55,10 +56,11 @@ router.post("/", function (req, res, next){
 			}
 
 			res.json(returnObj);
+			res.end();
 		});
 	}
 
-	res.end();
+	
 });
 
 
