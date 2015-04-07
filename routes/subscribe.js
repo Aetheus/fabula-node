@@ -22,7 +22,7 @@ router.post("/", function (req, res, next){
 	
 	var ancestorSelector = (req.body.ancestor != undefined) 	? req.body.ancestor : null;
 	var siteURL = (req.body.site != undefined) 					? req.body.site : null;
-	var 
+	
 
 	var session = req.session;
 	var userid = (req.body.username != undefined) ? req.body.username : null;
