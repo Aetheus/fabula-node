@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var pg = require("pg");
 var config = require("../utility/config");
+var verifylogin = require("../utility/verifylogin");
 var reservedwords = require("../utility/reservedwords");
 
 var feedchannel = (require("../model/FeedChannel"))();
@@ -21,9 +22,12 @@ router.post("/", function (req, res, next){
 	
 	var ancestorSelector = (req.body.ancestor != undefined) 	? req.body.ancestor : null;
 	var siteURL = (req.body.site != undefined) 					? req.body.site : null;
+	var 
 
 	var session = req.session;
-	var userid = (session.userid != undefined) ? session.userid : null;
+	var userid = (req.body.username != undefined) ? req.body.username : null;
+	var password= (req.body.password != undefined) ? req.body.password : null;
+
 
 	if (!userid){
 		return next(new Error("You must be signed in to subscribe to a feed!"));
@@ -33,33 +37,40 @@ router.post("/", function (req, res, next){
 	}
 
 
-	var insertDictionary = {
-		"fedUserID":userid,
-		"fedFeedChannelName":channelname,
-		"fedFeedChannelDesc":descriptionSelector,
-		"fedFeedChannelURL":siteURL,
-		"fedFeedChannelTitleSelector":titleSelector,
-		"fedFeedChannelLinkSelector":linkSelector,
-		"fedFeedChannelDescriptionSelector":descriptionSelector,
-		"fedFeedChannelImageLinkSelector" : imageLinkSelector,
-		"fedFeedChannelAncestorSelector" : ancestorSelector,
-		"fedFeedChannelIsActive" : true,
-		"fedFeedChannelIsCustom" : channelIsCustom
-	}
-	
-	feedchannel.insert(insertDictionary, function (err, result){
-		if (err){
-			if (err.code == 23505){
-				return next(new Error("Duplicate key error!"));		
-			}else{
-				return next(err);		
-			}
-		} 
+	verifylogin(userid,password, function (err, isVerified, user){
+		if (err) return next(err);
 
-		res.write("Success(or not?) \n");
-		res.write("" + JSON.stringify(result));
-		res.end("\n - fin");
+		if (!isVerified) return next(new Error("Invalid login details provided!"));
+	
+		var insertDictionary = {
+			"fedUserID":userid,
+			"fedFeedChannelName":channelname,
+			"fedFeedChannelDesc":descriptionSelector,
+			"fedFeedChannelURL":siteURL,
+			"fedFeedChannelTitleSelector":titleSelector,
+			"fedFeedChannelLinkSelector":linkSelector,
+			"fedFeedChannelDescriptionSelector":descriptionSelector,
+			"fedFeedChannelImageLinkSelector" : imageLinkSelector,
+			"fedFeedChannelAncestorSelector" : ancestorSelector,
+			"fedFeedChannelIsActive" : true,
+			"fedFeedChannelIsCustom" : channelIsCustom
+		}
+		
+		feedchannel.insert(insertDictionary, function (err, result){
+			if (err){
+				if (err.code == 23505){
+					return next(new Error("Duplicate key error!"));		
+				}else{
+					return next(err);		
+				}
+			} 
+	
+			res.setHeader('Content-Type', 'application/json');
+			res.end(JSON.stringify(result));
+		})
+
 	})
+
   	
 });
 
