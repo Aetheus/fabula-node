@@ -17,6 +17,11 @@ function returnFeedItem() {
 			boilerplate.insert(this.tablename,dictionary,callback);
 		},
 
+		/* simple update*/
+		update: function (updateDictionary, whereDictionary, callback){
+			boilerplate.update(this.tablename, updateDictionary, whereDictionary, callback);
+		},
+
 		// select by userID
 		//callback format: function (err, result)
 		selectWhereUserID: function (userid, callback){

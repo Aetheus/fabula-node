@@ -74,9 +74,10 @@ app.use("/logout", require("./routes/logout"));
 app.use("/db", require("./routes/db"));
 app.use("/subscribe", require("./routes/subscribe"));
 app.use("/subscribedchannels", require("./routes/subscribedchannels"));
-
-
+app.use("/readitem", require("./routes/readitem"));
 app.use('/greet', require("./routes/greet"));
+
+
 app.use("/supervisordemo", require("./routes/supervisordemo"));
 app.use("/updaterdemo", require("./routes/updaterdemo"));
 //*****************************************************************************************

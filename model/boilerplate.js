@@ -127,6 +127,52 @@ function createBoilerplate(){
 			}
 
 			this.query(statement,args,callback);
+		},
+
+		/*
+		This is a BASIC update statement. No inherent support for INNER JOIN syntax queries
+		tblname 		: "tblFeedChannel"
+		updateDictionary: { "fedFeedChannelName: "bob"}
+		whereDictionary	: { "fedFeedChannelID":1 } 
+		callback 		: function (err, result) { .. }
+		*/
+		update: function (tblName, updateDictionary, whereDictionary, callback){
+			if (Object.keys(updateDictionary).length == 0 || Object.keys(whereDictionary).length == 0){
+				return callback(new Error("Update and Where dictionaries MUST be provided!"));
+			}
+
+			var splitUpdateDictionary = this.splitDictionary(updateDictionary, callback);
+			var splitWhereDictionary = this.splitDictionary(whereDictionary, callback);
+
+			var whereColumnName = splitWhereDictionary.columns;
+			var whereColumnValue = splitWhereDictionary.values;
+
+
+			var setColumnName = splitUpdateDictionary.columns;
+			var setColumnValue = splitUpdateDictionary.values;
+
+
+			var counter = 1;
+			var setString = " SET ";
+			for (var i= 0; i<setColumnName.length; i++){
+				setString = setString + setColumnName[i] + "=" + "$" + counter + " ,";
+				counter++;
+			}
+			setString = setString.slice(0,-1);
+
+
+			var whereString = " WHERE ";
+			for (var i=0; i<whereColumnName.length; i++){
+					whereString = whereString + whereColumnName[i] + "=" + "$" + counter + " AND ";
+					counter++;
+			}
+			whereString = whereString.slice(0,whereString.length-4);
+
+			var parameters = setColumnValue.concat(whereColumnValue);
+
+
+			var queryString = "UPDATE " + tblName + setString + " " + whereString;  
+			this.query(queryString, parameters, callback);
 		}
 	}
 
