@@ -32,7 +32,6 @@ function returnFeedItem() {
 				 		done();
 						if (err) return callback(err);
 						
-
 						callback(null, result);
 						client.end();
 				 	}
@@ -40,6 +39,22 @@ function returnFeedItem() {
 
 			});
 			//select tblfeeditem.*, tblfeedchannel.feduserid from tblfeedchannel, tblfeeditem where tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = 'superuser';
+		},
+
+
+		selectWhereChannelID: function(channelid, callback){
+			pg.connect(config.databaseurl, function (err, client,done){
+				client.query("SELECT tblfeeditem.*, tblfeedchannel.fedfeedchannelurl FROM tblfeeditem, tblfeedchannel WHERE tblfeedchannel.fedfeedchannelid = $1",
+					[channelid],
+					function (err, result){
+						done();
+						if (err) return callback(err);
+
+						callback(null, result);
+						client.end();
+					});
+			});
+			//SELECT tblfeeditem.*, tblfeedchannel.fedfeedchannelurl FROM tblfeeditem, tblfeedchannel WHERE tblfeedchannel.fedfeedchannelid = $1;
 		},
 	
 		/*remember, err.code == 23505 is the code for duplicate keys!*/

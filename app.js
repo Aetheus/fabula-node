@@ -71,13 +71,16 @@ app.use('/index', require("./routes/index"));
 app.use('/users', require("./routes/users"));
 app.use("/login", require("./routes/login"));
 app.use("/logout", require("./routes/logout"));
-app.use("/db", require("./routes/db"));
+
+//for app
 app.use("/subscribe", require("./routes/subscribe"));
 app.use("/subscribedchannels", require("./routes/subscribedchannels"));
 app.use("/readitem", require("./routes/readitem"));
+app.use("/channel", require("./routes/channel"));
 app.use('/greet', require("./routes/greet"));
 
-
+//test routes
+app.use("/db", require("./routes/db"));
 app.use("/supervisordemo", require("./routes/supervisordemo"));
 app.use("/updaterdemo", require("./routes/updaterdemo"));
 //*****************************************************************************************

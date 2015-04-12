@@ -18,7 +18,14 @@ router.get("/:id",function (req,res,next){
 	var whereDictionary = {"fitfeeditemid":feeditemId};
 
 	feeditem.update(updateDictionary, whereDictionary, function (err, result){
-		console.log("do something");
+		var returnObj = {success:true};
+
+		if(err){
+			returnObj.success = false;
+			res.json(returnObj);
+		}
+
+		res.json(returnObj);
 	});
 });
 
