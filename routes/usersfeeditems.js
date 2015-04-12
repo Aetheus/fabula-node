@@ -4,8 +4,27 @@ var tblFeedChannelImporter = require("../model/FeedChannel");
 var tblFeedItemImporter = require("../model/FeedItem");
 
 var scrape = require("../utility/scrape");
+var verifylogin = require("../utility/verifylogin");
 
 
+//verifiable, POST based JSON version
+router.post("/", function (req,res,next){
+	var userid = req.body.userid;
+	var password = req.body.password;
+	var tblFeedItem = tblFeedItemImporter();
+
+	verifylogin(userid,password, function (err, isVerified, next){
+		if (err) return next(err);
+
+
+		tblFeedItem.selectWhereUserID(userid, function (err, result){
+			if (err) return next(err);
+	
+			res.json(result.rows);
+			res.end();
+		});
+	});
+});
 
 //JSON version
 router.get("/:userid",function (req,res,next){
