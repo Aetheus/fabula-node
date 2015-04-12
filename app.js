@@ -74,10 +74,12 @@ app.use("/logout", require("./routes/logout"));
 
 //for app
 app.use("/subscribe", require("./routes/subscribe"));
-app.use("/subscribedchannels", require("./routes/subscribedchannels"));
 app.use("/readitem", require("./routes/readitem"));
 app.use("/channel", require("./routes/channel"));
 app.use('/greet', require("./routes/greet"));
+app.use("/usersfeeditems", require("./routes/usersfeeditems"));
+app.use("/userschannels", require("./routes/userschannels"));
+
 
 //test routes
 app.use("/db", require("./routes/db"));

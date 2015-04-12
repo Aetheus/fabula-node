@@ -6,8 +6,27 @@ var tblFeedItemImporter = require("../model/FeedItem");
 var scrape = require("../utility/scrape");
 
 
+
+//JSON version
+router.get("/:userid",function (req,res,next){
+	var session = req.session;
+	var tblFeedChannel = tblFeedChannelImporter();
+	var tblFeedItem = tblFeedItemImporter();
+
+	var userid = req.params.userid;
+
+	tblFeedItem.selectWhereUserID(userid, function (err, result){
+		if (err) return next(err);
+
+		res.json(result.rows);
+		res.end();
+	});
+});
+
+
+
 //html version
-router.get("/", function (req,res,next){
+router.get("/HTML", function (req,res,next){
 	var session = req.session;
 	var tblFeedChannel = tblFeedChannelImporter();
 	var tblFeedItem = tblFeedItemImporter();
@@ -25,23 +44,6 @@ router.get("/", function (req,res,next){
 });
 
 
-//JSON version
-router.get("/JSON",function (req,res,next){
-	var session = req.session;
-	var tblFeedChannel = tblFeedChannelImporter();
-	var tblFeedItem = tblFeedItemImporter();
-
-	if (!session.userid){
-		return next(new Error("You must be logged in to view subscribed feeds"));
-	}
-	
-	tblFeedItem.selectWhereUserID(session.userid, function (err, result){
-		if (err) return next(err);
-
-		res.json(result.rows);
-		res.end();
-	});
-});
 
 
 //hidden
