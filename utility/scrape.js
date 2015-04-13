@@ -43,7 +43,7 @@ var exportObj = {
 				var title = feedchannelrow.fedfeedchanneltitleselector;
 				var link= feedchannelrow.fedfeedchannellinkselector; 
 				var description = feedchannelrow.fedfeedchanneldescriptionselector;
-				var image = feedchannelrow.fedfeedchannelimageselector;
+				var image = feedchannelrow.fedfeedchannelimagelinkselector;
 
 				//console.log("Currently scraping: \n" + JSON.stringify(feedchannelrow) + "\n");
 				request(siteURL, function(err,resp,body){
