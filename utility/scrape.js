@@ -45,6 +45,8 @@ var exportObj = {
 				var description = feedchannelrow.fedfeedchanneldescriptionselector;
 				var image = feedchannelrow.fedfeedchannelimagelinkselector;
 
+				console.log("image for this row is: " + image);
+
 				//console.log("Currently scraping: \n" + JSON.stringify(feedchannelrow) + "\n");
 				request(siteURL, function(err,resp,body){
 					completed++;	// one request completed; regardless of errorless or not
