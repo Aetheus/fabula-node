@@ -42,7 +42,7 @@ function returnFeedItem() {
 		},
 
 
-		selectWhereChannelID: function(channelid, callback){
+		selectWhereChannelID: function(channelid, callback, optionalOrderBy, optionalRowLimit){
 			pg.connect(config.databaseurl, function (err, client,done){
 				client.query("SELECT tblfeeditem.*, tblfeedchannel.fedfeedchannelurl FROM tblfeeditem, tblfeedchannel WHERE tblfeedchannel.fedfeedchannelid = $1",
 					[channelid],
@@ -67,7 +67,7 @@ function returnFeedItem() {
 					(function (i){
 						var currentItem = dictionaryArray[i];
 
-						console.log("Attempting to insert new feed item for channel of ID: " + currentItem.fitfeedchannelid);
+						//console.log("Attempting to insert new feed item for channel of ID: " + currentItem.fitfeedchannelid);
 						client.query("INSERT INTO tblFeedItem (fitfeedchannelid,fitfeeditemtitle,fitfeeditemlink,fitfeeditemdescription,fitfeeditemimagelink,fittimestamp,fitisread) VALUES ($1,$2,$3,$4,$5,$6,$7)",
 							[currentItem.fitfeedchannelid,currentItem.fitfeeditemtitle,currentItem.fitfeeditemlink,currentItem.fitfeeditemdescription,currentItem.fitfeeditemimagelink,"now()",false], 
 							function (err,result){
@@ -75,7 +75,7 @@ function returnFeedItem() {
 								completed++;
 								if (err){
 									if (err.code == 23505){
-										console.log("Attempting to insert duplicate of existing news item; Safely ignoring.");
+										//console.log("Attempting to insert duplicate of existing news item; Safely ignoring.");
 									}else { 
 										return callback(err); 
 									}
