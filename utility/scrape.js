@@ -45,7 +45,7 @@ var exportObj = {
 				var description = feedchannelrow.fedfeedchanneldescriptionselector;
 				var image = feedchannelrow.fedfeedchannelimagelinkselector;
 
-				console.log("image for this row is: " + image);
+				//console.log("image for this row is: " + image);
 
 				//console.log("Currently scraping: \n" + JSON.stringify(feedchannelrow) + "\n");
 				request(siteURL, function(err,resp,body){
@@ -62,10 +62,12 @@ var exportObj = {
 						}
 	
 						var newsArray = [];
-	
-	
+						
+						//define a reverse function - we'll use this to reverse the searchBody so we start from *bottom* results and work our way *up*.
+						$.prototype.reverse = [].reverse;
+						
 						//the each function actually isn't async at all, so this works
-						searchBody.each(function (){
+						searchBody.reverse().each(function (){
 							var titleText 		= (title && title !== reservedwords.dbNULL) 			?  ($(this).find(title).text() 			? $(this).find(title).text()		: reservedwords.dbNULL)	: reservedwords.dbNULL;		
 							var linkHref 		= (link && link   !== reservedwords.dbNULL) 			?  ($(this).find(link).attr("href") 	? $(this).find(link).attr("href") 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
 							var descriptionText = (description && description !== reservedwords.dbNULL) ?  ($(this).find(description).text() 	? $(this).find(description).text() 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
