@@ -31,7 +31,7 @@ function returnFeedItem() {
 				var queryString = "SELECT tblfeeditem.* FROM tblfeedchannel, tblfeeditem WHERE tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = $1";
 
 				if(optionalOrderBy && optionalOrderBy.column && optionalOrderBy.order){
-					queryString += " ORDER BY " + optionaOrderBy.column + " " + optionalOrderBy.order;
+					queryString += " ORDER BY " + optionalOrderBy.column + " " + optionalOrderBy.order;
 
 					if(optionalRowLimit && optionalRowLimit.limit){
 						queryString += " LIMIT " + optionalRowLimit.limit;
