@@ -55,8 +55,13 @@ router.post("/", function (req, res, next){
 			"fedFeedChannelIsActive" : true,
 			"fedFeedChannelIsCustom" : channelIsCustom
 		}
+
+		var whereDictionary = {
+			"fedUserID":userid,
+			"fedFeedChannelURL":siteURL
+		}
 		
-		feedchannel.insert(insertDictionary, function (err, result){
+		feedchannel.upsert(insertDictionary, whereDictionary, function (err, result){
 			if (err){
 				if (err.code == 23505){
 					return next(new Error("Duplicate key error!"));		
