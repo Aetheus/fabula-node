@@ -23,8 +23,12 @@ function returnModel() {
 		select: function (columns,whereDictionary,callback) {
 			var tablename = "tblFeedChannel";
 			boilerplate.select(columns,tablename,whereDictionary,callback);
-		}
+		},
 
+		upsert: function (upsertDictionary, whereDictionary, callback) {
+			var tblName = "tblFeedChannel";
+			boilerplate.upsert(tblName, upsertDictionary, whereDictionary, callback);
+		}
 	}
 
 	return FeedChannel;

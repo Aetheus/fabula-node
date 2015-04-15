@@ -16,8 +16,10 @@ function createBoilerplate(){
 				
 							console.log("Succesfully inserted: " + result);
 						}
+[optnl] delayClientEnd: true (ONLY call this IF you want to delay executing client.end(). 
+							in which case, the callback MUST have a signature of function () (null, result, client) and you MUST call client.end() in the callback )
 		*/
-		query: function (statement, args, callback){
+		query: function (statement, args, callback, delayClientEnd){
 		  	pg.connect(config.databaseurl, function(err, client, done) {
 		  		if (err) return callback(err);
 		  		
@@ -27,9 +29,11 @@ function createBoilerplate(){
 					done();
 					if (err) return callback(err);
 
-					callback(null, result);
+					callback(null, result,client);
 
-					client.end();
+					if(!delayClientEnd){
+						client.end();	
+					}
 				});
 				
 			});	
@@ -173,6 +177,109 @@ function createBoilerplate(){
 
 			var queryString = "UPDATE " + tblName + setString + " " + whereString;  
 			this.query(queryString, parameters, callback);
+		},
+
+		upsert: function(tblName, upsertDictionary, whereDictionary, callback){
+			if (Object.keys(upsertDictionary).length == 0 || Object.keys(whereDictionary).length == 0){
+				return callback(new Error("Update and Where dictionaries MUST be provided!"));
+			}
+
+			/* Fiirst we start with the update part of our upsert. */
+			var splitUpdateDictionary = this.splitDictionary(upsertDictionary, callback);
+			var splitWhereDictionary = this.splitDictionary(whereDictionary, callback);
+
+			var whereColumnName = splitWhereDictionary.columns;
+			var whereColumnValue = splitWhereDictionary.values;
+
+
+			var setColumnName = splitUpdateDictionary.columns;
+			var setColumnValue = splitUpdateDictionary.values;
+
+
+			var counter = 1;
+			var setString = " SET ";
+			for (var i= 0; i<setColumnName.length; i++){
+				setString = setString + setColumnName[i] + "=" + "$" + counter + " ,";
+				counter++;
+			}
+			setString = setString.slice(0,-1);
+
+
+			var whereString = " WHERE ";
+			for (var i=0; i<whereColumnName.length; i++){
+					whereString = whereString + whereColumnName[i] + "=" + "$" + counter + " AND ";
+					counter++;
+			}
+			whereString = whereString.slice(0,whereString.length-4);
+
+			//copy the current setColumnValue
+			var setColumnValueCopy = setColumnValue;
+
+			var parameters = setColumnValue.concat(whereColumnValue);
+
+
+			var updateQueryString = "UPDATE " + tblName + setString + " " + whereString;
+			console.log("upsert: update querystring was: " + updateQueryString)
+
+
+
+
+			/* Now we move onto the Insert part of our upsert */
+			var insertQueryString = " INSERT INTO " + tblName + " (" + setColumnName.toString() + ")";
+			
+			var insertQuerySelectString = "";
+			for (var i= 0; i<setColumnValueCopy.length; i++){
+				insertQuerySelectString = insertQuerySelectString + "$" + (i + 1) + " ,";
+			}
+			insertQuerySelectString = insertQuerySelectString.slice(0,-1);
+			
+			insertQueryString   += 	" SELECT " + insertQuerySelectString
+								+ 	" WHERE NOT EXISTS "
+								+	" (SELECT 1 FROM " + tblName + whereString + " )"
+			console.log("upsert: insert querystring was " + insertQueryString);
+
+
+			//fail ... guess we need to split it?
+			//var totalQueryString = updateQueryString + " ; " + insertQueryString;
+			//this.query(totalQueryString, parameters, callback);
+
+			var thisSpecificObject = this;
+			var delayClientEnd = true;
+			this.query(updateQueryString, parameters, function (err,result,client){
+				if (err) return callback(err);
+
+				console.log("Upsert: Update rowcount is " + result.rowCount);
+
+				if(result.rowCount != 0){
+					console.log("this record existed before and we're updating it");
+					return callback(err, result);
+				}
+
+				thisSpecificObject.query(insertQueryString, parameters, function(err, result, passedclient){
+					if (err) return callback(err);
+					
+					console.log("Upsert: Insert rowcount is " + result.rowCount);
+
+					callback(err, result);
+
+					passedclient.end();
+				},true);
+			}, delayClientEnd)
+
+		  	/*pg.connect(config.databaseurl, function(err, client, done) {
+		  		if (err) return callback(err);
+		  		
+				console.log("Attempting to execute SQL query: [" +statement + "] \n\tWith arguments: [" + args + "]");
+				client.query(updateQueryString, parameters, function (err, result) {
+					done();
+					if (err) {return callback(err);};
+
+					client.query(insertQueryString)
+
+					client.end();
+				});
+				
+			});*/
 		}
 	}
 

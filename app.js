@@ -85,6 +85,7 @@ app.use("/userschannels", require("./routes/userschannels"));
 app.use("/db", require("./routes/db"));
 app.use("/supervisordemo", require("./routes/supervisordemo"));
 app.use("/updaterdemo", require("./routes/updaterdemo"));
+app.use("/upserttest", require("./routes/upserttest"));
 //*****************************************************************************************
 
 
