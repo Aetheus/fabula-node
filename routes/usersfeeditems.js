@@ -16,13 +16,15 @@ router.post("/", function (req,res,next){
 	verifylogin(userid,password, function (err, isVerified, next){
 		if (err) return next(err);
 
+		var OrderByCondition = {column:"tblfeeditem.fittimestamp", order:"DESC"};
+		var RowLimit = null;	//fill this later to provide pagination?
 
 		tblFeedItem.selectWhereUserID(userid, function (err, result){
 			if (err) return next(err);
 	
 			res.json(result.rows);
 			res.end();
-		});
+		},OrderByCondition);
 	});
 });
 

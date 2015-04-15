@@ -23,10 +23,26 @@ function returnFeedItem() {
 		},
 
 		// select by userID
+		//e.g: optionalOrderBy  = {column:tblfeeditem.fittimestamp, order:ASC }	//order by fittimestamp in descending order
+		//e.g: optionalRowLimit = {offset:5, limit:10} 				//return 10 rows starting from row 5
 		//callback format: function (err, result)
-		selectWhereUserID: function (userid, callback){
+		selectWhereUserID: function (userid, callback, optionalOrderBy, optionalRowLimit){
 			pg.connect(config.databaseurl, function (err, client, done){
-				client.query("SELECT tblfeeditem.* FROM tblfeedchannel, tblfeeditem WHERE tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = $1",
+				var queryString = "SELECT tblfeeditem.* FROM tblfeedchannel, tblfeeditem WHERE tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = $1";
+
+				if(optionalOrderBy && optionalOrderBy.column && optionalOrderBy.order){
+					queryString += " ORDER BY " + optionaOrderBy.column + " " + optionalOrderBy.order;
+
+					if(optionalRowLimit && optionalRowLimit.limit){
+						queryString += " LIMIT " + optionalRowLimit.limit;
+						if(optionalRowLimit.offset){
+							queryString += " OFFSET " + optionalRowLimit.offset;
+						}
+					}
+				}
+
+
+				client.query(queryString,
 				 	[userid], 
 				 	function (err, result){
 				 		done();
@@ -42,7 +58,7 @@ function returnFeedItem() {
 		},
 
 
-		selectWhereChannelID: function(channelid, callback, optionalOrderBy, optionalRowLimit){
+		selectWhereChannelID: function(channelid, callback){
 			pg.connect(config.databaseurl, function (err, client,done){
 				client.query("SELECT tblfeeditem.*, tblfeedchannel.fedfeedchannelurl FROM tblfeeditem, tblfeedchannel WHERE tblfeedchannel.fedfeedchannelid = $1",
 					[channelid],
