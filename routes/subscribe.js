@@ -20,6 +20,9 @@ router.post("/", function (req, res, next){
 	var descriptionSelector = (req.body.description != undefined) ? req.body.description : reservedwords.dbNULL;
 	var imageLinkSelector = (req.body.imagelink != undefined) 	? req.body.imagelink : reservedwords.dbNULL;
 	
+
+	var tags = (req.body.tags != undefined) 	? req.body.tags : reservedwords.dbNULL;
+
 	var ancestorSelector = (req.body.ancestor != undefined) 	? req.body.ancestor : null;
 	var siteURL = (req.body.site != undefined) 					? req.body.site : null;
 	
@@ -53,15 +56,16 @@ router.post("/", function (req, res, next){
 			"fedFeedChannelImageLinkSelector" : imageLinkSelector,
 			"fedFeedChannelAncestorSelector" : ancestorSelector,
 			"fedFeedChannelIsActive" : true,
-			"fedFeedChannelIsCustom" : channelIsCustom
+			"fedFeedChannelIsCustom" : channelIsCustom,
+			"fedFeedChannelTags"	 : tags
 		}
 
-		var whereDictionary = {
+		/*var whereDictionary = {
 			"fedUserID":userid,
 			"fedFeedChannelURL":siteURL
-		}
+		}*/
 		
-		feedchannel.upsert(insertDictionary, whereDictionary, function (err, result){
+		feedchannel.insert(insertDictionary, function (err, result){
 			if (err){
 				if (err.code == 23505){
 					return next(new Error("Duplicate key error!"));		
