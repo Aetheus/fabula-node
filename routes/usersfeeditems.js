@@ -12,7 +12,7 @@ router.post("/", function (req,res,next){
 	var userid = req.body.userid;
 	var password = req.body.password;
 	var tblFeedItem = tblFeedItemImporter();
-	var timeRange = (timeRange) ? timeRange : null;
+	var timeRange = (req.body.timerange) ? req.body.timerange : null;
 
 	verifylogin(userid,password, function (err, isVerified, next){
 		if (err) return next(err);
