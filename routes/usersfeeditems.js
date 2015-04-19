@@ -12,10 +12,12 @@ router.post("/", function (req,res,next){
 	var userid = req.body.userid;
 	var password = req.body.password;
 	var tblFeedItem = tblFeedItemImporter();
+	var timeRange = (timeRange) ? timeRange : null;
 
 	verifylogin(userid,password, function (err, isVerified, next){
 		if (err) return next(err);
 
+		
 		var OrderByCondition = {column:"tblfeeditem.fittimestamp", order:"DESC"};
 		var RowLimit = null;	//fill this later to provide pagination?
 
@@ -24,7 +26,7 @@ router.post("/", function (req,res,next){
 	
 			res.json(result.rows);
 			res.end();
-		},OrderByCondition);
+		},timeRange, OrderByCondition);
 	});
 });
 
