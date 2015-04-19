@@ -32,6 +32,12 @@ function returnFeedItem() {
 				var queryString = "SELECT tblfeeditem.* FROM tblfeedchannel, tblfeeditem WHERE tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = $1";
 				var parameters = [userid];
 
+				if(optionalTimeRange && optionalTimeRange.start && optionalTimeRange.end){
+					queryString += " AND tblfeeditem.fittimestamp BETWEEN $2 AND $3";
+					parameters[parameters.length] = optionalTimeRange.start;
+					parameters[parameters.length] = optionalTimeRange.end;
+				}
+
 				if(optionalOrderBy && optionalOrderBy.column && optionalOrderBy.order){
 					queryString += " ORDER BY " + optionalOrderBy.column + " " + optionalOrderBy.order;
 
