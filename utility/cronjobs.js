@@ -10,7 +10,7 @@ var updater = require("../utility/updater");
 
 //1 minute timer
 var mycron = new cronJob("0 */1 * * * *", function (){
-	console.log("This will appear every 1 minute");
+	console.log("The time now is: " + (new Date()).toISOString());
 }, null, true, "UTC");
 
 
