@@ -13,6 +13,7 @@ router.post("/", function (req,res,next){
 	var password = req.body.password;
 	var tblFeedItem = tblFeedItemImporter();
 	var timeRange = (req.body.timerange) ? req.body.timerange : null;
+	var tags = (req.body.tags) ? req.body.tags : null;
 
 	console.log("timerange was: " + JSON.stringify(timeRange));
 
@@ -28,7 +29,7 @@ router.post("/", function (req,res,next){
 	
 			res.json(result.rows);
 			res.end();
-		},timeRange, OrderByCondition);
+		},timeRange, OrderByCondition,null,tags);
 	});
 });
 

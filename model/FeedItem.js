@@ -27,13 +27,25 @@ function returnFeedItem() {
 		//e.g: optionalOrderBy  = {column:tblfeeditem.fittimestamp, order:ASC }	//order by fittimestamp in descending order
 		//e.g: optionalRowLimit = {offset:5, limit:10} 				//return 10 rows starting from row 5
 		//callback format: function (err, result)
-		selectWhereUserID: function (userid, callback, optionalTimeRange, optionalOrderBy, optionalRowLimit){
+		selectWhereUserID: function (userid, callback, optionalTimeRange, optionalOrderBy, optionalRowLimit, optionalTags){
 			pg.connect(config.databaseurl, function (err, client, done){
 				var queryString = "SELECT tblfeeditem.* FROM tblfeedchannel, tblfeeditem WHERE tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = $1";
 				var parameters = [userid];
 
+				var isTagsUsed = false;
+				if(optionalTags){
+					queryString += " AND tblfeeditem.fedfeedchanneltags = $2";
+					parameters[parameters.length] = optionalTags;
+					isTagsUsed = true;
+				}
+
 				if(optionalTimeRange && optionalTimeRange.start && optionalTimeRange.end){
-					queryString += " AND tblfeeditem.fittimestamp BETWEEN $2 AND $3";
+					if (isTagsUsed){
+						queryString += " AND tblfeeditem.fittimestamp BETWEEN $3 AND $4";
+					}else{
+						queryString += " AND tblfeeditem.fittimestamp BETWEEN $2 AND $3";
+					}
+					
 					parameters[parameters.length] = optionalTimeRange.start;
 					parameters[parameters.length] = optionalTimeRange.end;
 				}
