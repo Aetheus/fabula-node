@@ -16,6 +16,7 @@ router.post("/", function (req,res,next){
 	var tags = (req.body.tags) ? req.body.tags : null;
 
 	console.log("timerange was: " + JSON.stringify(timeRange));
+	console.log("tags were: " + tags);
 
 	verifylogin(userid,password, function (err, isVerified, next){
 		if (err) return next(err);
