@@ -26,7 +26,10 @@ router.post("/", function (req,res,next){
 		var RowLimit = null;	//fill this later to provide pagination?
 
 		tblFeedItem.selectWhereUserID(userid, function (err, result){
-			if (err) return next(err);
+			if (err){
+				console.log(err);
+				return next(err);	
+			} 
 	
 			res.json(result.rows);
 			res.end();

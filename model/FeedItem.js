@@ -38,6 +38,7 @@ function returnFeedItem() {
 					parameters[parameters.length] = "%"+optionalTags+"%";
 					isTagsUsed = true;
 				}
+				console.log("we got to line 41 of feed item");
 
 				if(optionalTimeRange && optionalTimeRange.start && optionalTimeRange.end){
 					if (isTagsUsed){
