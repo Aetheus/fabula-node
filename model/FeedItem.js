@@ -34,7 +34,7 @@ function returnFeedItem() {
 
 				var isTagsUsed = false;
 				if(optionalTags){
-					queryString += " AND tblfeeditem.fedfeedchanneltags = $2";
+					queryString += " AND tblfeeditem.fedfeedchanneltags LIKE $2";
 					parameters[parameters.length] = optionalTags;
 					isTagsUsed = true;
 				}
