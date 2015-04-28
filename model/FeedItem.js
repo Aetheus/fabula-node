@@ -34,11 +34,11 @@ function returnFeedItem() {
 
 				var isTagsUsed = false;
 				if(optionalTags){
-					queryString += " AND tblfeeditem.fedfeedchanneltags LIKE $2";
+					queryString += " AND tblfeedchannel.fedfeedchanneltags LIKE $2";
 					parameters[parameters.length] = "%"+optionalTags+"%";
 					isTagsUsed = true;
 				}
-				console.log("we got to line 41 of feed item");
+
 
 				if(optionalTimeRange && optionalTimeRange.start && optionalTimeRange.end){
 					if (isTagsUsed){
