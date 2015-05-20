@@ -22,6 +22,11 @@ function returnFeedItem() {
 			boilerplate.update(this.tablename, updateDictionary, whereDictionary, callback);
 		},
 
+		/* simple delete */
+		del: function (whereDictionary, callback){
+			boilerplate.delete(this.tablename, whereDictionary, callback);
+		},
+
 		// select by userID
 		//e.g: optionaTimeRange = {start:"2015-04-16", end:"NOW()"}
 		//e.g: optionalOrderBy  = {column:tblfeeditem.fittimestamp, order:ASC }	//order by fittimestamp in descending order

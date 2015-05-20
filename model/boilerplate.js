@@ -280,6 +280,25 @@ function createBoilerplate(){
 				});
 				
 			});*/
+		},
+
+		//delete 
+		del: function(tblName, whereDictionary,callback){
+			var splitWhereDictionary = this.splitDictionary(whereDictionary, callback);
+			var whereColumnName = splitWhereDictionary.columns;
+			var whereColumnValue = splitWhereDictionary.values;
+
+			var counter = 1;
+			var whereString = " WHERE ";
+			for (var i=0; i<whereColumnName.length; i++){
+					whereString = whereString + whereColumnName[i] + "=" + "$" + counter + " AND ";
+					counter++;
+			}
+			whereString = whereString.slice(0,whereString.length-4);
+
+			var queryString = "DELETE FROM " + tblName + " " + whereString;
+			var paremeters = whereColumnValue;
+			this.query(queryString, paremeters, callback);
 		}
 	}
 

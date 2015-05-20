@@ -79,6 +79,7 @@ app.use("/channel", require("./routes/channel"));
 app.use('/greet', require("./routes/greet"));
 app.use("/usersfeeditems", require("./routes/usersfeeditems"));
 app.use("/userschannels", require("./routes/userschannels"));
+app.use("/registration", require("./routes/registration"));
 
 
 //test routes

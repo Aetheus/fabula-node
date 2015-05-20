@@ -14,31 +14,28 @@ function returnModel() {
 			return null;
 		},
 		
+		tableName: "tblUser",
+
 		/*basic insert*/
 		insert: function (dictionary, callback) {
-			var tablename = "tblFeedChannel"; 
-			boilerplate.insert(tablename, dictionary, callback);
+			boilerplate.insert(this.tableName, dictionary, callback);
 		},
 
 		select: function (columns,whereDictionary,callback) {
-			var tablename = "tblFeedChannel";
-			boilerplate.select(columns,tablename,whereDictionary,callback);
+			boilerplate.select(columns,this.tableName,whereDictionary,callback);
 		},
 
 		update: function (updateDictionary, whereDictionary, callback) {
-			var tblName = "tblFeedChannel";
-			boilerplate.update(tblName, updateDictionary, whereDictionary, callback);
+			boilerplate.update(this.tableName, updateDictionary, whereDictionary, callback);
 		},
 
 		upsert: function (upsertDictionary, whereDictionary, callback) {
-			var tblName = "tblFeedChannel";
-			boilerplate.upsert(tblName, upsertDictionary, whereDictionary, callback);
+			boilerplate.upsert(this.tableName, upsertDictionary, whereDictionary, callback);
 		},
 
 				/* simple delete */
 		del: function (whereDictionary, callback){
-			var tablename = "tblFeedChannel";
-			boilerplate.del(tablename, whereDictionary, callback);
+			boilerplate.del(this.tableName, whereDictionary, callback);
 		},
 	}
 
