@@ -14,8 +14,10 @@ router.get("/:id", function(req,res,next){
 		if (err) return next(err);
 
 		//res.json(result);
-		res.setHeader('Content-Type', 'application/json');
-		res.end(JSON.stringify(result));
+		//res.setHeader('Content-Type', 'application/json');
+		//res.end(JSON.stringify(result.rows));
+		res.json(result.rows);
+		res.end();
 	});
 });
 
