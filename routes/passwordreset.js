@@ -5,7 +5,7 @@ var UserImporter = require("../model/User.js");
 
 
 //get the question
-router.get("/",function (req,res,next){
+router.get("/question",function (req,res,next){
 	if (!req.query.userid){
 		return next(new Error("User ID must be provided!"));
 	}
