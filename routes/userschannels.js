@@ -45,8 +45,7 @@ router.get("/edit/:channelid", function (req,res,next) {
 		if (err) return next(err);
 
 		//res.json(result);
-		res.setHeader('Content-Type', 'application/json');
-		res.end(JSON.stringify(result));
+		res.end("success");
 	});
 });
 
@@ -60,8 +59,9 @@ router.get("/delete/:channelid", function (req,res,next) {
 		if (err) return next(err);
 
 		//res.json(result);
-		res.setHeader('Content-Type', 'application/json');
-		res.end(JSON.stringify(result));
+		//res.setHeader('Content-Type', 'application/json');
+		//res.end(JSON.stringify(result));
+		res.end("success");
 	});
 });
 
