@@ -20,6 +20,10 @@ router.get("/",function (req,res,next){
 			return next(err);	
 		}
 
+		if (result.rowCount == 0){
+			return next(new Error("user does not exist"));
+		}		
+
 		var secretQuestion = result.rows[0].usruserpasswordquestion;
 
 		//usrUserPasswordQuestion
