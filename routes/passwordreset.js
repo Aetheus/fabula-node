@@ -35,10 +35,10 @@ router.get("/",function (req,res,next){
 
 //test an answer
 router.get("/answer",function (req,res,next){
-	if (!req.query.userid){
+	if (req.query.userid == ""){
 		return next(new Error("User ID must be provided!"));
 	}
-	if (!req.query.answer){
+	if (req.query.answer = ""){
 		return next(new Error("Answer must be provided!"));
 	}
 
