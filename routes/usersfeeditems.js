@@ -15,6 +15,8 @@ router.post("/", function (req,res,next){
 	var timeRange = (req.body.timerange) ? req.body.timerange : null;
 	var tags = (req.body.tags) ? req.body.tags : null;
 
+	var isRowCheckOnly = (req.body.isrowcheckonly) ? true : false;
+
 	console.log("timerange was: " + JSON.stringify(timeRange));
 	console.log("tags were: " + tags);
 
@@ -31,8 +33,16 @@ router.post("/", function (req,res,next){
 				return next(err);	
 			} 
 	
-			res.json(result.rows);
-			res.end();
+			//if they only requested for rows, then that's what we give em. else, we give em all the results
+			if(isRowCheckOnly){
+				var returnObj = {"rowCount" : result.rowCount };
+
+				res.setHeader('Content-Type', 'application/json');
+				res.end(JSON.stringify(returnObj));				
+			}else{
+				res.json(result.rows);
+				res.end();				
+			}
 		},timeRange, OrderByCondition,null,tags);
 	});
 });
