@@ -30,14 +30,15 @@ router.get("/edit/:channelid", function (req,res,next) {
 	var channelname = (req.query.channelname != undefined) ? req.query.channelname : null;
 	var channeldesc = (req.query.channeldesc != undefined) ? req.query.channeldesc : null;
 	var channeltags = (req.query.channeltags != undefined) ? req.query.channeltags : null;
-
+	var channelcolour = (req.query.channelcolour != undefined) ? req.query.channelcolour : null;
 
 	
 	var feedchannel = FeedChannelImporter();
 	var updateDictionary = {	
-			"fedfeedchannelname": channelname,  
-			"fedfeedchanneldesc": channeldesc,
-			"fedfeedchanneltags": channeltags
+			"fedfeedchannelname"	: channelname,  
+			"fedfeedchanneldesc"	: channeldesc,
+			"fedfeedchanneltags"	: channeltags,
+			"fedfeedchannelcolour" 	: channelcolour
 	};
 	var whereDictionary = {"fedfeedchannelid" : channelid}
 
