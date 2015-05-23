@@ -34,7 +34,7 @@ function returnFeedItem() {
 		//callback format: function (err, result)
 		selectWhereUserID: function (userid, callback, optionalTimeRange, optionalOrderBy, optionalRowLimit, optionalTags){
 			pg.connect(config.databaseurl, function (err, client, done){
-				var queryString = "SELECT tblfeeditem.*, tblfeedchannel.fedfeedchannelurl FROM tblfeedchannel, tblfeeditem WHERE tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = $1";
+				var queryString = "SELECT tblfeeditem.*, tblfeedchannel.fedfeedchannelurl,tblfeedchannel.fedfeedchannelcolour FROM tblfeedchannel, tblfeeditem WHERE tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = $1";
 				var parameters = [userid];
 
 				var isTagsUsed = false;
