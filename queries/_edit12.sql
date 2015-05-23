@@ -5,6 +5,16 @@
 */
 
 
+
+ALTER TABLE tblfeeditem DROP CONSTRAINT 
+feeditemidentity;
+
+
+/*trim leading/trailing whitespace*/
+UPDATE tblfeeditem
+SET fitfeeditemtitle = LTRIM(RTRIM(fitfeeditemtitle));
+
+
 /*this deletes all existing duplicates that would violate our rule*/
 DELETE FROM tblfeeditem 
 WHERE fitfeeditemid NOT IN 
@@ -14,9 +24,6 @@ WHERE fitfeeditemid NOT IN
 	GROUP BY fitFeedChannelID,fitFeedItemTitle,fitFeedItemLink,fitFeedItemDescription
 );
 
-
-ALTER TABLE tblfeeditem DROP CONSTRAINT 
-feeditemidentity;
 
 
 ALTER TABLE tblfeeditem 
