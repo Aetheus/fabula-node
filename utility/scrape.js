@@ -45,6 +45,10 @@ var exportObj = {
 				var description = feedchannelrow.fedfeedchanneldescriptionselector;
 				var image = feedchannelrow.fedfeedchannelimagelinkselector;
 
+				//trim the description and title
+				title = title.trim();
+				description = description.trim();
+
 				//console.log("image for this row is: " + image);
 
 				//console.log("Currently scraping: \n" + JSON.stringify(feedchannelrow) + "\n");
