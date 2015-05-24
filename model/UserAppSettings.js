@@ -4,7 +4,7 @@ var boilerplate = (require("./boilerplate.js"))();
 function returnModel() {
 	var FeedChannel = {
 
-		tableName:"tblUserAppSettings"
+		tableName:"tblUserAppSettings",
 
 		modelObj: function (rowobj){
 			return null;

@@ -81,6 +81,7 @@ app.use("/usersfeeditems", require("./routes/usersfeeditems"));
 app.use("/userschannels", require("./routes/userschannels"));
 app.use("/registration", require("./routes/registration"));
 app.use("/passwordreset", require("./routes/passwordreset"));
+app.use("/usersappsettings", require("./routes/usersappsettings"));
 
 
 //test routes
