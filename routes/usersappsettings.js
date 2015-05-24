@@ -13,12 +13,18 @@ router.get("/:id", function(req,res,next){
 	UserAppSettings.select(["*"],whereDictionary, function (err, result){
 		if (err) return next(err);
 
-		var globalSettings = result.rows[0].uasglobalsettings;
-		var jsonObj = JSON.parse(globalSettings);
-		console.log("retrieved globalSettings is " + JSON.stringify(jsonObj));		
+		if(result.rowCount > 0){
+			var globalSettings = result.rows[0].uasglobalsettings;
+			var jsonObj = JSON.parse(globalSettings);
+			console.log("retrieved globalSettings is " + JSON.stringify(jsonObj));		
 
-		res.json(globalSettings);
-		res.end();
+			res.json(globalSettings);
+			res.end();
+		}else{
+			res.json({"isEmptyFlag" : true});
+			res.end();
+		}
+
 	});
 });
 
