@@ -18,7 +18,7 @@ router.get("/:id", function(req,res,next){
 			var jsonObj = JSON.parse(globalSettings);
 			console.log("retrieved globalSettings is " + JSON.stringify(jsonObj));		
 
-			res.json(globalSettings);
+			res.json(jsonObj);
 			res.end();
 		}else{
 			res.json({"isEmptyFlag" : true});
