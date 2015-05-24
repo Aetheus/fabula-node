@@ -48,9 +48,6 @@ router.get("/set/:id", function(req,res,next){
 		}else{
 			res.end("failure");
 		}
-
-		res.json(globalSettings);
-		res.end();
 	});
 });
 
