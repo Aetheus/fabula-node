@@ -18,6 +18,11 @@ router.get("/:id", function(req,res,next){
 			var jsonObj = JSON.parse(globalSettings);
 			console.log("retrieved globalSettings is " + JSON.stringify(jsonObj));		
 
+			//if its an empty json obj for some reason, return the isEmpty flag
+			if(JSON.stringify(jsonObj) == "{}"){
+				jsonObj = {"isEmptyFlag" : true};
+			}
+
 			res.json(jsonObj);
 			res.end();
 		}else{
