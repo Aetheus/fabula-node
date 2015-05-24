@@ -250,6 +250,7 @@ function createBoilerplate(){
 
 				console.log("Upsert: Update rowcount is " + result.rowCount);
 
+				var updateRowCount = result.rowCount;
 				if(result.rowCount != 0){
 					console.log("this record existed before and we're updating it");
 					return callback(err, result);
@@ -259,6 +260,9 @@ function createBoilerplate(){
 					if (err) return callback(err);
 					
 					console.log("Upsert: Insert rowcount is " + result.rowCount);
+					result.rowCount += updateRowCount;
+					console.log("Upsert: Total rowcount is " + result.rowCount);
+
 
 					callback(err, result);
 
