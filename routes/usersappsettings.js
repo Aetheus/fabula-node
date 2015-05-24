@@ -37,13 +37,17 @@ router.get("/set/:id", function(req,res,next){
 	var preparedGlobalSettings = JSON.stringify ( JSON.parse(globalSettings) );
 
 	var UserAppSettings = UserAppSettingsImporter();
-	var updateDictionary = {"uasglobalsettings" : globalSettings};
+	var updateDictionary = {"uasuserid" : userid, "uasglobalsettings" : globalSettings};
 	var whereDictionary = {"uasuserid":userid};
 
 	UserAppSettings.upsert(updateDictionary,whereDictionary, function (err, result){
 		if (err) return next(err);
 
-		var globalSettings = result.rows[0].uasglobalsSettings;
+		if (result.rowCount > 0){
+			res.end("success");
+		}else{
+			res.end("failure");
+		}
 
 		res.json(globalSettings);
 		res.end();
