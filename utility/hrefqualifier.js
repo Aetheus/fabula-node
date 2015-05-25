@@ -6,6 +6,7 @@ var hrefQualifier = function (href, fullLocation){
 	var parsedObj = url.parse(fullLocation);
 	var uri = parsedObj.protocol + "//" + parsedObj.host;
 
+	console.log("case for: " + fullLocation + " with a href of " + href);
 
 	//if the input path is relative-from-here, delete the ./ token to make it relative
 	if(new RegExp("/^(./)([^/]?)/").test(href)){
