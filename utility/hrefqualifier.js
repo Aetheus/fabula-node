@@ -6,7 +6,7 @@ var hrefQualifier = function (href, fullLocation){
 	var parsedObj = url.parse(fullLocation);
 	var uri = parsedObj.protocol + "//" + parsedObj.host;
 
-	console.log("case for: " + fullLocation + " with a href of " + href);
+	//console.log("case for: " + fullLocation + " with a href of " + href);
 
 	//if the input path is relative-from-here, delete the ./ token to make it relative
 	if( /^(.\/)([^\/]?)/.test(href)){
@@ -16,19 +16,19 @@ var hrefQualifier = function (href, fullLocation){
 	//if the input href is already qualified, copy it unchanged
 	if( /^([a-z]+):\/\//.test(href) ){
 		uri = href;
-		console.log("case 1");
+		//console.log("case 1");
 	}
 
 	//or if the input href begins with a leading slash, then it's base relative
 	//so just add the input href to the base URI
 	else if(href.substr(0, 1) == '/'){
 		uri += href;
-		console.log("case 2");
+		//console.log("case 2");
 	}
 
 	//or if it's an up-reference the path has to be computed
 	else if(/^((..\/)+)([^\/].*$)/.test(href)){
-		console.log("case 3");
+		//console.log("case 3");
 		//get the last part of the path, minus up-references
 		var lastpath = href.match(new RegExp("/^((../)+)([^/].*$)/"));
 		lastpath = lastpath[lastpath.length - 1];
@@ -64,7 +64,7 @@ var hrefQualifier = function (href, fullLocation){
 
 	//otherwise it's a relative path,
 	else{
-		console.log("case 4");
+		//console.log("case 4");
 		//calculate the path to this directory
 		path = '';
 		parts = parsedObj.pathname.split('/');
