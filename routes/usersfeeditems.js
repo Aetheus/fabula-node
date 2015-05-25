@@ -15,12 +15,13 @@ router.post("/", function (req,res,next){
 	var timeRange = (req.body.timerange) ? req.body.timerange : null;
 	var tags = (req.body.tags) ? req.body.tags : null;
 
-	var limit = 	(typeof req.body.limit != 'undefined') ? req.body.limit : null;
-	var offset = 	(typeof req.body.offset != 'undefined') ? req.body.offset : 0;
+
+	//var limit  = 	(typeof req.body.limit != 'undefined') ? req.body.limit : null;
+	//var offset = 	(typeof req.body.offset != 'undefined') ? req.body.offset : 0;
 
 	//optionalRowLimit.limit;
 	//optionalRowLimit.offset;
-	var RowLimit = { limit: limit, offset: offset};	
+	var RowLimit = (req.body.rowlimit) ? req.body.rowlimit : null;
 
 
 
@@ -28,7 +29,6 @@ router.post("/", function (req,res,next){
 
 	console.log("timerange was: " + JSON.stringify(timeRange));
 	console.log("tags were: " + tags);
-	console.log(" limit : " + limit + " ; offset: " + offset);
 	console.log("rowlimit was: " + JSON.stringify(RowLimit));
 
 	verifylogin(userid,password, function (err, isVerified, next){
