@@ -9,12 +9,12 @@ var hrefQualifier = function (href, fullLocation){
 	console.log("case for: " + fullLocation + " with a href of " + href);
 
 	//if the input path is relative-from-here, delete the ./ token to make it relative
-	if(new RegExp("/^(./)([^/]?)/").test(href)){
+	if( /^(.\/)([^\/]?)/.test(href)){
 		href = href.replace(new RegExp("/^(./)([^/]?)/, '$2'"));
 	}
 
 	//if the input href is already qualified, copy it unchanged
-	if(new RegExp("/^([a-z]+)://").test(href) || new RegExp("/^([a-z]+):///").test(href)){
+	if( /^([a-z]+):\/\//.test(href) ){
 		uri = href;
 		console.log("case 1");
 	}
@@ -27,7 +27,7 @@ var hrefQualifier = function (href, fullLocation){
 	}
 
 	//or if it's an up-reference the path has to be computed
-	else if(new RegExp("/^((../)+)([^/].*$)/").test(href)){
+	else if(/^((..\/)+)([^\/].*$)/.test(href)){
 		console.log("case 3");
 		//get the last part of the path, minus up-references
 		var lastpath = href.match(new RegExp("/^((../)+)([^/].*$)/"));
