@@ -14,7 +14,7 @@ var hrefQualifier = function (href, fullLocation){
 	}
 
 	//if the input href is already qualified, copy it unchanged
-	if(new RegExp("/^([a-z]+):///").test(href)){
+	if(new RegExp("/^([a-z]+)://").test(href) || new RegExp("/^([a-z]+):///").test(href)){
 		uri = href;
 		console.log("case 1");
 	}
