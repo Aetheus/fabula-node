@@ -23,10 +23,12 @@ router.post("/", function (req,res,next){
 	var RowLimit = { limit: limit, offset: offset};	
 
 
+
 	var isRowCheckOnly = (req.body.isrowcheckonly) ? true : false;
 
 	console.log("timerange was: " + JSON.stringify(timeRange));
 	console.log("tags were: " + tags);
+	console.log("rowlimit was: " + JSON.stringify(RowLimit));
 
 	verifylogin(userid,password, function (err, isVerified, next){
 		if (err) return next(err);
