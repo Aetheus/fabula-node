@@ -15,9 +15,13 @@ router.post("/", function (req,res,next){
 	var timeRange = (req.body.timerange) ? req.body.timerange : null;
 	var tags = (req.body.tags) ? req.body.tags : null;
 
+	var limit = (req.body.limit) ? req.body.limit : null;
+	var offset = (req.body.offset) ? req.body.offset : null;
+
 	//optionalRowLimit.limit;
 	//optionalRowLimit.offset;
-	var RowLimit = (req.body.rowlimit) ? req.body.rowlimit : null;	
+	var RowLimit = { limit: limit, offset: offset};	
+
 
 	var isRowCheckOnly = (req.body.isrowcheckonly) ? true : false;
 
@@ -26,8 +30,6 @@ router.post("/", function (req,res,next){
 
 	verifylogin(userid,password, function (err, isVerified, next){
 		if (err) return next(err);
-
-		
 
 		var OrderByCondition = {column:"tblfeeditem.fittimestamp", order:"DESC"};
 		
