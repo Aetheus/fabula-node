@@ -68,6 +68,8 @@ function returnFeedItem() {
 				}
 
 
+				console.log("attempting to execute SQL: " + queryString);
+				console.log("	with the following params: " + parameters);
 				client.query(queryString, parameters, 
 				 	function (err, result){
 				 		done();
