@@ -78,7 +78,7 @@ var exportObj = {
 							var imageSrc 		= (image && image !== reservedwords.dbNULL) 			?  ($(this).find(image).attr("src") 	? $(this).find(image).attr("src") 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
 	
 							if(linkHref != reservedwords.dbNULL){
-								 hrefQualifier(linkHref, siteURL);
+								 linkHref = hrefQualifier(linkHref, siteURL);
 							}
 
 							var newsItem = new thisObj.News(channelID, titleText,linkHref,descriptionText,imageSrc);
