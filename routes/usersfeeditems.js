@@ -15,6 +15,10 @@ router.post("/", function (req,res,next){
 	var timeRange = (req.body.timerange) ? req.body.timerange : null;
 	var tags = (req.body.tags) ? req.body.tags : null;
 
+	//optionalRowLimit.limit;
+	//optionalRowLimit.offset;
+	var RowLimit = (req.body.rowlimit) ? req.body.rowlimit : null;	
+
 	var isRowCheckOnly = (req.body.isrowcheckonly) ? true : false;
 
 	console.log("timerange was: " + JSON.stringify(timeRange));
@@ -24,8 +28,9 @@ router.post("/", function (req,res,next){
 		if (err) return next(err);
 
 		
+
 		var OrderByCondition = {column:"tblfeeditem.fittimestamp", order:"DESC"};
-		var RowLimit = null;	//fill this later to provide pagination?
+		
 
 		tblFeedItem.selectWhereUserID(userid, function (err, result){
 			if (err){
@@ -43,7 +48,7 @@ router.post("/", function (req,res,next){
 				res.json(result.rows);
 				res.end();				
 			}
-		},timeRange, OrderByCondition,null,tags);
+		},timeRange, OrderByCondition,RowLimit,tags);
 	});
 });
 
