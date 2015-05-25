@@ -5,7 +5,7 @@ var cheerio = require("cheerio");
 var request = require("request");
 
 var reservedwords = require("../utility/reservedwords");
-
+var hrefQualifier = require("../utility/hrefqualifier");
 
 var exportObj = {
 	testMsg: "Successfully exported scrape.js",
@@ -77,6 +77,10 @@ var exportObj = {
 							var descriptionText = (description && description !== reservedwords.dbNULL) ?  ($(this).find(description).text() 	? $(this).find(description).text() 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
 							var imageSrc 		= (image && image !== reservedwords.dbNULL) 			?  ($(this).find(image).attr("src") 	? $(this).find(image).attr("src") 	: reservedwords.dbNULL)	: reservedwords.dbNULL;
 	
+							if(linkHref != reservedwords.dbNULL){
+								 hrefQualifier(linkHref, siteURL);
+							}
+
 							var newsItem = new thisObj.News(channelID, titleText,linkHref,descriptionText,imageSrc);
 	
 							newsArray[newsArray.length] = newsItem;

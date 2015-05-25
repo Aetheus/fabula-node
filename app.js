@@ -9,6 +9,7 @@ var bodyParser = require('body-parser');
 var cronjobs = require("./utility/cronjobs.js");
 var pg = require('pg');
 var password = require("password-hash-and-salt");
+var url = require("url");
 
 //importing configs
 var config = require("./utility/config.js");
