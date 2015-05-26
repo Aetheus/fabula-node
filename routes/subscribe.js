@@ -60,12 +60,14 @@ router.post("/", function (req, res, next){
 			"fedFeedChannelTags"	 : tags
 		}
 
-		/*var whereDictionary = {
+		var whereDictionary = {
 			"fedUserID":userid,
-			"fedFeedChannelURL":siteURL
-		}*/
+			"fedFeedChannelURL":siteURL,
+		}
+
+
 		
-		feedchannel.insert(insertDictionary, function (err, result){
+		feedchannel.upsert(insertDictionary, whereDictionary, function (err, result){
 			if (err){
 				if (err.code == 23505){
 					return next(new Error("Duplicate key error!"));		
