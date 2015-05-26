@@ -45,9 +45,7 @@ var exportObj = {
 				var description = feedchannelrow.fedfeedchanneldescriptionselector;
 				var image = feedchannelrow.fedfeedchannelimagelinkselector;
 
-				//trim the description and title
-				title = title.trim();
-				description = description.trim();
+
 
 				//console.log("image for this row is: " + image);
 
@@ -80,6 +78,10 @@ var exportObj = {
 							if(linkHref != reservedwords.dbNULL){
 								 linkHref = hrefQualifier(linkHref, siteURL);
 							}
+
+							//trim the description and title
+							titleText 		= (titleText 		&& titleText 		!== reservedwords.dbNULL) ? titleText.trim() 		: reservedwords.dbNULL;
+							descriptionText = (descriptionText 	&& descriptionText 	!== reservedwords.dbNULL) ? descriptionText.trim() 	: reservedwords.dbNULL;
 
 							var newsItem = new thisObj.News(channelID, titleText,linkHref,descriptionText,imageSrc);
 	
