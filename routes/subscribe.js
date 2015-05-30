@@ -8,9 +8,6 @@ var reservedwords = require("../utility/reservedwords");
 var feedchannel = (require("../model/FeedChannel"))();
 
 
-//https://fabula-node.herokuapp.com/supervisordemo?title=DIV.subject&link=A&description=DIV.author&ancestor=DIV.topic.firstpost.starter&channelname=Webspace&imagelink=IMG&iscustom=true&site=http%3A%2F%2Fwebspace.apiit.edu.my%2F
-//remove this route eventually. its no longer necessary for us.
-
 router.post("/", function (req, res, next){
 	var channelname = (req.body.channelname != undefined) 		? req.body.channelname : null;
 	var channelIsCustom = (req.body.iscustom != undefined) 		? req.body.iscustom : true;
@@ -85,7 +82,7 @@ router.post("/", function (req, res, next){
   	
 });
 
-
+/*
 router.get("/hidden", function (req,res, next){
 	var channelname = (req.query.channelname != undefined) ? req.query.channelname : null;
 	var imageLinkSelector = (req.query.imagelink != undefined) ? req.query.imagelink : null;
@@ -133,6 +130,6 @@ router.get("/hidden", function (req,res, next){
 	
 	});	
 });
-
+*/
 
 module.exports = router;
