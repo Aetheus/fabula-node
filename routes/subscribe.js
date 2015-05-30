@@ -142,4 +142,7 @@ router.get("/hidden", function (req,res, next){
 });
 */
 
+//make the export target the router object. 
+//Now, whenever another script has the statement "var susbcribe = request('/routes/subscribe.js')" in it, 
+//our route will be assigned as the value of "var subscribe", essentially "Exporting" our route object out.
 module.exports = router;
