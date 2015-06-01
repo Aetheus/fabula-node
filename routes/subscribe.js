@@ -92,23 +92,28 @@ router.post("/", function (req, res, next){	// << this is the callback function
 	
 });
 
-/*
-router.get("/hidden", function (req,res, next){
-	var channelname = (req.query.channelname != undefined) ? req.query.channelname : null;
-	var imageLinkSelector = (req.query.imagelink != undefined) ? req.query.imagelink : null;
-	var channelIsCustom = (req.query.iscustom != undefined) ? req.query.iscustom : null;
+router.get("/", function (req, res, next){	// << this is the callback function 
+
+	//req.body is an object that holds the value of parameters that were sent with the POST request
+	//therefore, the variables below this are being assigned the value of  parameters sent with the POST request
+	//for instance, req.body.channelname is retrieving the "channelname" parameter from the post request	
+	var channelname = 			(req.query.channelname != undefined) 		? req.query.channelname : null;
+	var channelIsCustom = 		(req.query.iscustom != undefined) 			? req.query.iscustom : true;
+
+	var titleSelector = 		(req.query.title != undefined) 				? req.query.title : reservedwords.dbNULL;
+	var linkSelector = 			(req.query.link != undefined) 				? req.query.link : reservedwords.dbNULL;
+	var descriptionSelector = 	(req.query.description != undefined) 		? req.query.description : reservedwords.dbNULL;
+	var imageLinkSelector = 	(req.query.imagelink != undefined) 			? req.query.imagelink : reservedwords.dbNULL;	
+	var tags = 					(req.query.tags != undefined) 				? req.query.tags : reservedwords.dbNULL;
+
+	var ancestorSelector = 		(req.query.ancestor != undefined) 			? req.query.ancestor : null;
+	var siteURL = 				(req.query.site != undefined) 				? req.query.site : null;
+	
+	var userid = 				(req.query.username != undefined) 			? req.query.username : null;
+	var password= 				(req.query.password != undefined) 			? req.query.password : null;
 
 
-	var titleSelector = (req.query.title != undefined) ? req.query.title : null;
-	var linkSelector = (req.query.link != undefined) ? req.query.link : null;
-	var descriptionSelector = (req.query.description != undefined) ? req.query.description : null;
-	var ancestorSelector = (req.query.ancestor != undefined) ? req.query.ancestor : null;
-	var siteURL = (req.query.site != undefined) ? req.query.site : null;
-
-	var session = req.session;
-	var userid = (session.userid != undefined) ? session.userid : null;
-
-	var isValid = true;
+	//if the user ID was NOT sent with the POST request, return an error.
 	if (!userid){
 		return next(new Error("You must be signed in to subscribe to a feed!"));
 	}
@@ -116,31 +121,56 @@ router.get("/hidden", function (req,res, next){
 		return next(new Error("Site URL and either Title,Link or Description must be provided to subscribe to a site!"));
 	}
 
-	
-  		
 
-  	pg.connect(config.databaseurl, function(err, client, done) {
-  		if (err) return next(err);
-  		
+	//verify the user's login, and then execute the callback function below
+	verifylogin(userid,password, function (err, isVerified, user){	//<< callback function, to be executed only after verification
+		//if an error occured, return the error
+		if (err) return next(err);	
 
-  		//notice that client.query's callback has a param for RESULT. Don't confuse it with router.get's callback param, RES(PONSE)
-		client.query(
-			"INSERT INTO tblFeedChannel (fedUserID,fedFeedChannelName,fedFeedChannelDesc,fedFeedChannelURL,fedFeedChannelTitleSelector,fedFeedChannelLinkSelector,fedFeedChannelDescriptionSelector, fedFeedChannelImageLinkSelector, fedFeedChannelAncestorSelector,fedFeedChannelIsActive,fedFeedChannelIsCustom) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)"
-			, [userid,channelname,descriptionSelector,siteURL,titleSelector,linkSelector,descriptionSelector,imageLinkSelector,ancestorSelector,true,channelIsCustom],		 
-			function (err, result){
-				done();
-				if (err) return next(err);
+		//if the user could not be verified, return a custom error informing them that they entered invalid details
+		if (!isVerified) return next(new Error("Invalid login details provided!"));
 	
-				console.log("Succesfully inserted: " + result);
+		//create a key-value pair object that holds values to be inserted into the tblFeedChannel table in our database
+		//this key-value pair object holds the values of the parameters we extracted from the POST request.
+		var insertDictionary = {
+			"fedUserID":userid,
+			"fedFeedChannelName":channelname,
+			"fedFeedChannelDesc":descriptionSelector,
+			"fedFeedChannelURL":siteURL,
+			"fedFeedChannelTitleSelector":titleSelector,
+			"fedFeedChannelLinkSelector":linkSelector,
+			"fedFeedChannelDescriptionSelector":descriptionSelector,
+			"fedFeedChannelImageLinkSelector" : imageLinkSelector,
+			"fedFeedChannelAncestorSelector" : ancestorSelector,
+			"fedFeedChannelIsActive" : true,
+			"fedFeedChannelIsCustom" : channelIsCustom,
+			"fedFeedChannelTags"	 : tags
+		}
 
-				client.end();
-				res.redirect("/index");
-			}
-		);
+		//this is for our upsert function - if there already exists a feed channel for this specific user and URL,
+		//we will UPDATE that feed channel. Otherwise, we will INSERT a new one.
+		var whereDictionary = {
+			"fedUserID":userid,
+			"fedFeedChannelURL":siteURL,
+		}
+
+
+		//we've written a handy "upsert" function for our tables. This allows us to INSERT a row ONLY IF a row matching the columns
+		//of our whereDictionary object doesn't exist in our database. If such a row exists, this function performs an UPDATE instead.
+		feedchannel.upsert(insertDictionary, whereDictionary, function (err, result){
+			if (err){
+				return next(err);		
+				/*if (err.code == 23505){return next(new Error("Duplicate key error!"));}else{}*/
+			} 
+		
+			//set the response header to JSON and return the results of this subscription back to the requester
+			res.setHeader('Content-Type', 'application/json');
+			res.end(JSON.stringify(result));
+		})
+
+	})
 	
-	});	
 });
-*/
 
 //make the export target the router object. 
 //Now, whenever another script has the statement "var susbcribe = request('/routes/subscribe.js')" in it, 

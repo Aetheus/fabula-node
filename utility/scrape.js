@@ -120,7 +120,7 @@ var exportObj = {
 
 	},
 
-	
+	/*
 	scrapeMessages: function (siteURL, ancestor, title, link, description, callback){
 		//if unable to provide title, link or description, at least pass "null" as params
 		//ancestor, title and link are all strings and jQuery selectors 
@@ -162,7 +162,7 @@ var exportObj = {
 			});
 		})(this);	//end closure
 	},
-
+	*/
 
 }
 
