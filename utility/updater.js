@@ -17,11 +17,11 @@ var exportVar = {
 		FeedChannel.select(["*"], null, function (err, result){
 			if (err)  console.error(err);
 
-			scrape.scrapeFeedChannel(result.rows, function (err, newsArrayArray) {
-				if (err){
-					console.log( err.length + " error(s) occured while scraping feed channels. Please review below: ");
-					for(var i=0; i<err.length;i++){
-						console.error(err);
+			scrape.scrapeFeedChannel(result.rows, function (errArr, newsArrayArray) {
+				if (errArr && errArr instanceof Array && errArr.length > 0){
+					console.log( errArr.length + " error(s) occured while scraping feed channels. Please review below: ");
+					for(var i=0; i<errArr.length;i++){
+						console.error(errArr[i]);
 					}
 				}
 
