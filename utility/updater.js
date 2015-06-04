@@ -18,7 +18,13 @@ var exportVar = {
 			if (err)  console.error(err);
 
 			scrape.scrapeFeedChannel(result.rows, function (err, newsArrayArray) {
-				if (err) throw err;
+				if (err){
+					console.log( err.length + " error(s) occured while scraping feed channels. Please review below: ");
+					for(var i=0; i<err.length;i++){
+						console.error(err);
+					}
+				}
+
 
 				//the array returned by scrape has nested arrays arranged by feedchannelid; we need to flatten this table befoer passing it to our MultiInsert
 				var flattenedNewsArray = [].concat.apply([],newsArrayArray);
