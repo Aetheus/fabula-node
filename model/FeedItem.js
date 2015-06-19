@@ -47,7 +47,7 @@ function returnFeedItem() {
 				}
 
 				if(optionalTimeRange && optionalTimeRange.start && optionalTimeRange.end){
-					queryString += " AND tblfeeditem.fittimestamp BETWEEN $" + numSqlParams+1 + "AND $" + numSqlParams+2;
+					queryString += " AND tblfeeditem.fittimestamp BETWEEN $" + (numSqlParams+1) + "AND $" + (numSqlParams+2);
 					numSqlParams += 2;
 
 					parameters[parameters.length] = optionalTimeRange.start;
