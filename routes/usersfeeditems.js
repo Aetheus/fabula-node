@@ -14,6 +14,7 @@ router.post("/", function (req,res,next){
 	var tblFeedItem = tblFeedItemImporter();
 	var timeRange = (req.body.timerange) ? req.body.timerange : null;
 	var tags = (req.body.tags) ? req.body.tags : null;
+	var searchquery = (req.body.searchquery) ? req.body.searchquery : null;
 
 
 	//var limit  = 	(typeof req.body.limit != 'undefined') ? req.body.limit : null;
@@ -53,7 +54,7 @@ router.post("/", function (req,res,next){
 				res.json(result.rows);
 				res.end();				
 			}
-		},timeRange, OrderByCondition,RowLimit,tags);
+		},timeRange, OrderByCondition,RowLimit,tags,searchquery);
 	});
 });
 

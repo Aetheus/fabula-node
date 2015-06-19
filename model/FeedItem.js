@@ -32,29 +32,29 @@ function returnFeedItem() {
 		//e.g: optionalOrderBy  = {column:tblfeeditem.fittimestamp, order:ASC }	//order by fittimestamp in descending order
 		//e.g: optionalRowLimit = {offset:5, limit:10} 				//return 10 rows starting from row 5
 		//callback format: function (err, result)
-		selectWhereUserID: function (userid, callback, optionalTimeRange, optionalOrderBy, optionalRowLimit, optionalTags){
+		selectWhereUserID: function (userid, callback, optionalTimeRange, optionalOrderBy, optionalRowLimit, optionalTags,optionalSearch){
 			pg.connect(config.databaseurl, function (err, client, done){
 				var queryString = "SELECT tblfeeditem.*, tblfeedchannel.fedfeedchannelurl,tblfeedchannel.fedfeedchannelcolour FROM tblfeedchannel, tblfeeditem WHERE tblfeedchannel.fedfeedchannelid = tblfeeditem.fitfeedchannelid AND tblfeedchannel.feduserid = $1";
 				var parameters = [userid];
+				var numSqlParams = 1;	//used to track SQL params. there's always at least one SQL param (userid)
 
-				var isTagsUsed = false;
+
 				if(optionalTags){
-					queryString += " AND tblfeedchannel.fedfeedchanneltags LIKE $2";
+					numSqlParams += 1;
+					queryString += " AND tblfeedchannel.fedfeedchanneltags LIKE $" + numSqlParams;
 					parameters[parameters.length] = "%"+optionalTags+"%";
 					isTagsUsed = true;
 				}
 
-
 				if(optionalTimeRange && optionalTimeRange.start && optionalTimeRange.end){
-					if (isTagsUsed){
-						queryString += " AND tblfeeditem.fittimestamp BETWEEN $3 AND $4";
-					}else{
-						queryString += " AND tblfeeditem.fittimestamp BETWEEN $2 AND $3";
-					}
-					
+					queryString += " AND tblfeeditem.fittimestamp BETWEEN $" + numSqlParams+1 + "AND $" + numSqlParams+2;
+					numSqlParams += 2;
+
 					parameters[parameters.length] = optionalTimeRange.start;
 					parameters[parameters.length] = optionalTimeRange.end;
 				}
+
+
 
 				if(optionalOrderBy && optionalOrderBy.column && optionalOrderBy.order){
 					queryString += " ORDER BY " + optionalOrderBy.column + " " + optionalOrderBy.order;
