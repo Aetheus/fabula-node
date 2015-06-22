@@ -41,8 +41,8 @@ function returnFeedItem() {
 
 				if(optionalTags){
 					numSqlParams += 1;
-					queryString += " AND LOWER(tblfeedchannel.fedfeedchanneltags) LIKE LOWER($" + numSqlParams + ")";
-					parameters[parameters.length] = "%"+optionalTags+"%";
+					queryString += " AND LOWER(tblfeedchannel.fedfeedchanneltags) LIKE $" + numSqlParams + "";
+					parameters[parameters.length] = "%"+optionalTags.toLowerCase()+"%";
 					isTagsUsed = true;
 				}
 
@@ -55,9 +55,9 @@ function returnFeedItem() {
 				}
 
 				if(optionalSearch){
-					queryString += " AND LOWER(fitfeeditemdescription) LIKE LOWER($" + (numSqlParams+1) + ") OR LOWER(fitfeeditemtitle) LIKE LOWER($" + (numSqlParams+1) + ")";					
+					queryString += " AND (LOWER(fitfeeditemdescription) LIKE $" + (numSqlParams+1) + " OR LOWER(fitfeeditemtitle) LIKE $" + (numSqlParams+1) + ")";					
 					numSqlParams += 1;
-					parameters[parameters.length] = "%"+optionalSearch+"%";
+					parameters[parameters.length] = "%"+optionalSearch.toLowerCase()+"%";
 				}
 
 
