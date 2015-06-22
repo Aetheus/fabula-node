@@ -41,7 +41,7 @@ function returnFeedItem() {
 
 				if(optionalTags){
 					numSqlParams += 1;
-					queryString += " AND tblfeedchannel.fedfeedchanneltags LIKE $" + numSqlParams;
+					queryString += " AND LOWER(tblfeedchannel.fedfeedchanneltags) LIKE LOWER($" + numSqlParams + ")";
 					parameters[parameters.length] = "%"+optionalTags+"%";
 					isTagsUsed = true;
 				}
@@ -52,6 +52,12 @@ function returnFeedItem() {
 
 					parameters[parameters.length] = optionalTimeRange.start;
 					parameters[parameters.length] = optionalTimeRange.end;
+				}
+
+				if(optionalSearch){
+					queryString += " AND LOWER(fitfeeditemdescription) LIKE LOWER($" + (numSqlParams+1) + ") OR LOWER(fitfeeditemtitle) LIKE LOWER($" + (numSqlParams+1) + ")";					
+					numSqlParams += 1;
+					parameters[parameters.length] = optionalSearch;
 				}
 
 
