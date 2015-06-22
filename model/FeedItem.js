@@ -57,7 +57,7 @@ function returnFeedItem() {
 				if(optionalSearch){
 					queryString += " AND LOWER(fitfeeditemdescription) LIKE LOWER($" + (numSqlParams+1) + ") OR LOWER(fitfeeditemtitle) LIKE LOWER($" + (numSqlParams+1) + ")";					
 					numSqlParams += 1;
-					parameters[parameters.length] = optionalSearch;
+					parameters[parameters.length] = "%"+optionalSearch+"%";
 				}
 
 
